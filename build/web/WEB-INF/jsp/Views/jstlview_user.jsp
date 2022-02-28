@@ -12,31 +12,22 @@
         <h1>User</h1>
         <div class="py-3">
             <div class="text-muted">
-                <c:catch var="errorDB">
-                    <sql:setDataSource driver="com.mysql.jdbc.Driver"
-                                       url="jdbc:mysql://localhost:3306/adopt_pets_db"
-                                       user="root"
-                                       password=""/>
-                    <sql:update>
-                        INSERT INTO users(id, name, phoneNumber, email) VALUES (
-                        ${ub.getId()},
-                        "${ub.getName()}" ,
-                        "${ub.getPhoneNumber()}",
-                        "${ub.getEmail()}"
-                        );
-                    </sql:update>
-                </c:catch>
-                <c:if test="${not empty errorDB}">
-                    <div class="alert alert-danger">
-                        <strong>Se produjo un error:</strong> ${errorDB} <br>
-                    </div>
-                </c:if>
+                
             </div>
 
             <b>Name: </b> <c:out value="${ub.getName()}" /><br/>
             <b>Email: </b> <c:out value="${ub.getEmail()}" /><br/>
             <b>Phone: </b> <c:out value="${ub.getPhoneNumber()}" /><br/>
             <b>ID: </b> <c:out value="${ub.getId()}" /><br/>
+            
+            <div class="container-contact100-form-btn mb-0 w-75 mx-auto">
+                <div class="wrap-contact100-form-btn pt-2 pb-0">
+                    <div class="contact100-form-bgbtn"></div>
+                    <a class="contact100-form-btn btn mt-1 mb-0" href="listusers.htm">
+                        <span class="fs-18">Go to users list</span>
+                    </a>
+                </div>
+            </div>
 
         </div>
         <br/>

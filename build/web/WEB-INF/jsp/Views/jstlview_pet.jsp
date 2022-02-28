@@ -12,30 +12,7 @@
         <h1>Pet</h1>
         <jsp:useBean id="pet" scope="request" class="Models.PetBean" />
         <p class="py-3">
-            <div class="text-muted">
-                <c:catch var="errorDB">
-                    <sql:setDataSource driver="com.mysql.jdbc.Driver"
-                                       url="jdbc:mysql://localhost:3306/adopt_pets_db"
-                                       user="root"
-                                       password=""/>
-                    <sql:update>
-                        INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted) VALUES (
-                        "${pet.getPet_type()}" ,
-                        "${pet.getName()}" ,
-                        ${pet.getBorn_year()},
-                        "${pet.getColor()}",
-                        "${pet.getBreed()}" ,
-                        ${pet.getIs_adopted()}
-                        );
-                    </sql:update>
-                </c:catch>
-                <c:if test="${not empty errorDB}">
-                    <div class="alert alert-danger">
-                        <strong>Se produjo un error:</strong> ${errorDB} <br>
-                    </div>
-                </c:if>
-            </div>
-
+            
             <b>Name: </b>${pet.getName()}<br/>
             <b>Pet type: </b> <jsp:getProperty name="pet" property="pet_type" /><br/>
             <b>Born Year: </b> <jsp:getProperty name="pet" property="born_year" /><br/>
@@ -44,6 +21,15 @@
             <b>Is adopted?: </b> 
             <c:if test="${pet.getIs_adopted()}">Yes</c:if>
             <c:if test="${!pet.getIs_adopted()}">No</c:if><br/>
+            
+            <div class="container-contact100-form-btn mb-0 w-75 mx-auto">
+                <div class="wrap-contact100-form-btn pt-2 pb-0">
+                    <div class="contact100-form-bgbtn"></div>
+                    <a class="contact100-form-btn btn mt-1 mb-0" href="listpets.htm">
+                        <span class="fs-18">Go to pets list</span>
+                    </a>
+                </div>
+            </div>
         </p>
         <br/>
     </div>

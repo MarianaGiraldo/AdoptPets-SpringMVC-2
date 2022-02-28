@@ -45,6 +45,7 @@ public class AdoptController {
         ModelAndView mav = new ModelAndView();
         String sql = "INSERT INTO `user_pet`(`user_id`, `pet_id`) VALUES (?, ?)";
         this.jdbcTemplate.update(sql, ab.getUser_id(), ab.getPet_id());
+        
         String sql2 = "UPDATE `pets` SET `is_adopted` = '1' WHERE `pets`.`id` = (?);";
         this.jdbcTemplate.update(sql2, ab.getPet_id());
         mav.setViewName("Views/jstlview_adoptpet");

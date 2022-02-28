@@ -13,21 +13,7 @@
             <span class="contact100-form-title m-b-0">
                 Welcome!
             </span>
-            <p class="text-muted mt-0">
-                <%
-                    try {
-                %>
-                <sql:setDataSource driver="com.mysql.jdbc.Driver"
-                                   url="jdbc:mysql://localhost:3306/adopt_pets_db"
-                                   user="root"
-                                   password=""/>
-                Conexión a base de datos exitosa
-                <%
-                    } catch (Exception ex) {
-                        out.print("Conexion a Base de datos fallida: " + ex.getMessage());
-                    }
-                %>
-            </p>
+            
             <form:errors path="*" element="div" cssClass="alert alert-danger mt-0" />
             <br/>
             <div class="wrap-input100 validate-input" data-validate="Name is required">

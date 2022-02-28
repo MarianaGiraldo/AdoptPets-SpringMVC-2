@@ -54,13 +54,10 @@
                         <a class="nav-link active" aria-current="page" href="index.htm">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="form_user.htm">User</a>
+                        <a class="nav-link" href="listusers.htm">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="form_pet.htm">Pet</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listpets.htm">Adopt Pet</a>
+                        <a class="nav-link" href="listpets.htm">Pets</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.jsp">Login</a>

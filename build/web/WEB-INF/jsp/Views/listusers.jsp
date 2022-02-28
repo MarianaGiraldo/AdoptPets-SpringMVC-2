@@ -21,6 +21,14 @@
         <span class="contact100-form-title m-b-0">
             Users
         </span>
+        <div class="container-contact100-form-btn w-50 mx-auto mb-3">
+            <div class="wrap-contact100-form-btn pt-2 pb-0">
+                <div class="contact100-form-bgbtn"></div>
+                <a class="contact100-form-btn btn mt-1 mb-0" href="form_user.htm">
+                    <span class="fs-18">Add User</span>
+                </a>
+            </div>
+        </div>
         <table id="userTable" class="table table-hover">
             <thead class="table-primary bg-opacity-50">
                 <tr>
@@ -40,36 +48,8 @@
                         <td>${user.email}</td>
                         <td>
                             <div class="row">
-                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit pet</a>
-                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete pet</a>
-                            </div>
-                        </td>
-                    </tr>
-                </c:forEach>
-                    <c:forEach items="${users}" var="user">
-                    <tr>
-                        <td>${user.id}</td>
-                        <td>${user.name}</td>
-                        <td>${user.phoneNumber}</td>
-                        <td>${user.email}</td>
-                        <td>
-                            <div class="row">
-                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit pet</a>
-                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete pet</a>
-                            </div>
-                        </td>
-                    </tr>
-                </c:forEach>
-                    <c:forEach items="${users}" var="user">
-                    <tr>
-                        <td>${user.id}</td>
-                        <td>${user.name}</td>
-                        <td>${user.phoneNumber}</td>
-                        <td>${user.email}</td>
-                        <td>
-                            <div class="row">
-                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit user</a>
-                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete user</a>
+                                <a class="btn btn-success mt-3 col mx-1" href="form_user.htm?id=${user.id}">Edit user</a>
+                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm?id=${user.id}">Delete user</a>
                             </div>
                         </td>
                     </tr>
