@@ -31,9 +31,8 @@ public class UserController {
     public ModelAndView listUsers(){
         ModelAndView mav = new ModelAndView();
         
-        String sql = "select * from users";
+        String sql = "SELECT * from users";
         List users = this.jdbcTemplate.queryForList(sql);
-        System.out.println("List: "+ users);
         mav.addObject("users", users);
         mav.setViewName("Views/listusers");
         return mav;

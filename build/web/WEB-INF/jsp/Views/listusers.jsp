@@ -28,6 +28,7 @@
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +38,40 @@
                         <td>${user.name}</td>
                         <td>${user.phoneNumber}</td>
                         <td>${user.email}</td>
+                        <td>
+                            <div class="row">
+                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit pet</a>
+                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete pet</a>
+                            </div>
+                        </td>
+                    </tr>
+                </c:forEach>
+                    <c:forEach items="${users}" var="user">
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.phoneNumber}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <div class="row">
+                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit pet</a>
+                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete pet</a>
+                            </div>
+                        </td>
+                    </tr>
+                </c:forEach>
+                    <c:forEach items="${users}" var="user">
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.phoneNumber}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <div class="row">
+                                <a class="btn btn-success mt-3 col mx-1" href="edituser.htm">Edit user</a>
+                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm">Delete user</a>
+                            </div>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

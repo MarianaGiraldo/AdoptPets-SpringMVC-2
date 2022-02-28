@@ -79,9 +79,11 @@
             </div>
 
             <div class="container-contact100-form-btn">
-                <div class="wrap-contact100-form-btn">
+                <div class="wrap-contact100-form-btn pt-2 pb-0">
                     <div class="contact100-form-bgbtn"></div>
-                    <a class="contact100-form-btn btn" href="listpets.htm">List Pets</a>
+                    <a class="contact100-form-btn btn mt-1 mb-0" href="listpets.htm">
+                        <span class="fs-18">List Pets</span>
+                    </a>
                 </div>
             </div>    
         </form:form>

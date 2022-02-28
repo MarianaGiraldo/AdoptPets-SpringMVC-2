@@ -4,10 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/src/java/Controllers/UserController.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/jsp/Views/jstlform_user.jsp</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/dispatcher-servlet.xml</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/jsp/Views/listusers.jsp</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/jsp/Views/list_pets.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/src/java/Controllers/AdoptController.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/jsp/Views/jstlform_adoptpet.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/NetBeansProjects/JSP_SpringMVC_1/web/WEB-INF/jsp/Views/jstlview_adoptpet.jsp</file>
         </group>
     </open-files>
 </project-private>

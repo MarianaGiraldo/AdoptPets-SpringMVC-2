@@ -9,8 +9,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
     <head>
@@ -20,12 +18,18 @@
         <link rel="stylesheet" href='<c:url value="public/css/util.css" />' >
 
         <link rel="icon" type="image/png" href="public/images/icons/favicon.ico"/>
-        <!--===============================================================================================-->
+        
+        <!--Bootstrap===============================================================================================-->
         <link rel="stylesheet" type="text/css" href='<c:url value="public/vendor/bootstrap/css/bootstrap.min.css" />'>
+        <script src='<c:url value="public/vendor/bootstrap/js/popper.js"/>'></script>
+        <script src='<c:url value="public/vendor/bootstrap/js/bootstrap.min.js"/>'></script>
+        
         <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href='<c:url value="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />'>
-        <!--===============================================================================================-->
-
+        
+        <!-- Jquery===============================================================================================-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
         <!--===============================================================================================-->
         <script src='<c:url value="public/js/main.js"/>'></script>
         <script src='<c:url value="public/js/nav.js"/>'></script>   
@@ -33,9 +37,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Adopt Pets</title>
     </head>
-    <body class="bg-primary bg-opacity-10">
+    <body class="">
 
-    <nav class="navbar navbar-expand-lg nav">
+    <nav class="navbar fixed-top navbar-expand-lg nav bg-dark">
 
         <div class="container-fluid container">
             <div class="logo">
@@ -73,7 +77,7 @@
     <!-- Jquery needed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     
-    <!-- Function used to shrink nav bar removing paddings and adding black background -->
+    <!-- Function used to shrink nav bar removing paddings and adding black background
     <script>
         $(window).scroll(function() {
             if ($(document).scrollTop() > 50) {
@@ -85,4 +89,4 @@
                 $('.nav').removeClass('p-0');
             }
         });
-    </script>
+    </script> -->

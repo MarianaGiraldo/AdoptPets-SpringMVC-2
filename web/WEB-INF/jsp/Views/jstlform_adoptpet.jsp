@@ -22,9 +22,10 @@
             </div>
             <div class="wrap-input100 input100-select">
                 <form:label path="pet_id" cssClass="label-input100">Pet id</form:label>
-                <form:input path="user_id" cssClass="input100 " type="text" value="${pet_id}" disabled="true"/>
-                    <div>
-                </div>
+                <form:input path="pet_id" cssClass="input100 " type="text" value="${pet_id}" disabled="true"/>
+
+            </div>
+            <div>
                 <span class="focus-input100"></span>
             </div>
             <div class="container-contact100-form-btn">
