@@ -6,17 +6,16 @@
 
 package Controllers;
 
-import Dao.AdoptDao;
-import Dao.DBConnection;
-import Dao.UserDao;
-import Models.AdoptBean;
+import Dao.*;
+import Models.*;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -24,17 +23,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Mariana
  */
 @Controller
-@RequestMapping(value = "form_adoptpet.htm")
 public class AdoptController {
-    private final JdbcTemplate jdbcTemplate;
     private final UserDao userDao;
+    private final PetDao petDao;
     private final AdoptDao adoptDao;
+    private final AdoptBeanValidation validate_adopt;
 
     public AdoptController() {
-       DBConnection con = new DBConnection();
-       this.jdbcTemplate = new JdbcTemplate(con.connect());
        this.userDao = new UserDao();
+       this.petDao = new PetDao();
        this.adoptDao = new AdoptDao();
+       this.validate_adopt = new AdoptBeanValidation();
     }
     
     /***
@@ -42,42 +41,102 @@ public class AdoptController {
      * @param request
      * @return ModelAndView mav
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "form_adoptpet.htm", method = RequestMethod.GET)
     public ModelAndView getAdoptForm(HttpServletRequest request){
-        AdoptBean ab = new AdoptBean();
         ModelAndView mav = new ModelAndView("Views/jstlform_adoptpet");
-        int code = this.adoptDao.getCode();
-        mav.addObject("adopt", ab);
+        AdoptBean ab;
+        //Getting pet_id parameter
+        String reqPet_id = request.getParameter("pet_id");
+        mav.addObject("reqPet_id", reqPet_id);
         
-        String pet_id = request.getParameter("pet_id");
-        mav.addObject("pet_id", pet_id);
-        
+        //Adding users and pets lists
         List users = userDao.listUsers();
         mav.addObject("userList", users);
-        
+        List pets = petDao.listAvailablePets();
+        mav.addObject("petList", pets);
+        if (request.getParameter("id") != null) {
+            //Update Adoption form
+            int id = Integer.parseInt(request.getParameter("id"));
+            ab = this.adoptDao.getAdoptionById(id);
+            int code = ab.getId();
+            mav.addObject("code", code);
+            
+            //Getting old pet
+            PetBean pet = petDao.getPetxId(Integer.parseInt(ab.getPet_id()));
+            pets.add(pet);
+            mav.addObject("petList", pets);
+            
+            mav.addObject("adopt", ab);
+        } else {
+            //Insert Adoption form
+            ab = new AdoptBean();
+            int code = this.adoptDao.getCode();
+            mav.addObject("code", code);
+
+            ab.setPet_id(reqPet_id);
+            mav.addObject("adopt", ab);
+
+        }
         return mav;
     }
     
     /***
-     * Method POST of adoptions form
+     * Validation adoptions form
      * @param ab
-     * @return 
+     * @param result
+     * @param status
+     * @param request
+     * @return ModelAndView mav
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView postAdoptForm( AdoptBean ab){
+    @RequestMapping(value = "form_adoptpet.htm", method = RequestMethod.POST)
+    public ModelAndView postAdoptForm(
+            @ModelAttribute("adopt") AdoptBean ab,
+            BindingResult result,
+            SessionStatus status,
+            HttpServletRequest request){
         ModelAndView mav = new ModelAndView();
-        String sql = "INSERT INTO adoptings(user_id, pet_id) VALUES (?, ?)";
-        this.jdbcTemplate.update(sql, ab.getUser_id(), ab.getPet_id());
-        System.out.print(sql);
-        System.out.println("Insert into adoptions table successfully");
-        
-        String sql2 = "UPDATE `pets` SET `is_adopted` = '1' WHERE `pets`.`id` = (?);";
-        this.jdbcTemplate.update(sql2, ab.getPet_id());
-        mav.setViewName("Views/jstlview_adoptpet");
-        System.out.println("Pet status updated");
-        
+        this.validate_adopt.validate(ab, result);
+        if (result.hasErrors()) {
+            //Adding users and pets lists
+            List users = userDao.listUsers();
+            mav.addObject("userList", users);
+            List pets = petDao.listAvailablePets();
+            mav.addObject("petList", pets);
+            
+            //Getting pet_id parameter
+            String reqPet_id = request.getParameter("pet_id");
+            mav.addObject("reqPet_id", reqPet_id);
+            ab = new AdoptBean();
+            int code = this.adoptDao.getCode();
+            mav.addObject("code", code);
+
+            ab.setPet_id(reqPet_id);
+            mav.addObject("adopt", ab);
+            mav.setViewName("Views/jstlform_adoptpet");
+        } else {
+            this.adoptDao.saveAdoption(ab);
+            mav.setViewName("Views/jstlview_adoptpet");
+        }
         return mav;
     }
     
+    //Listing users
+    @RequestMapping("listadoptions.htm")
+        public ModelAndView listAdoptions(){
+        ModelAndView mav = new ModelAndView();
+        List adoptions = this.adoptDao.listAdoptions();
+        mav.addObject("adoptions", adoptions);
+        mav.setViewName("Views/list_adoptions");
+        return mav;
+    }
+        
+    @RequestMapping(value = "deleteadoption.htm", method = RequestMethod.GET)
+    public ModelAndView deleteUser(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        int id = Integer.parseInt(request.getParameter("id"));
+        this.adoptDao.deleteAdoption(id);
+        mav.setViewName("redirect:/listadoptions.htm");
+        return mav;
+    }
     
 }

@@ -49,9 +49,10 @@
                         <td>${user.phoneNumber}</td>
                         <td>${user.email}</td>
                         <td>
-                            <div class="row">
-                                <a class="btn btn-success mt-3 col mx-1" href="form_user.htm?id=${user.id}">Edit user</a>
-                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm?id=${user.id}">Delete user</a>
+                            <div class="row p-0">
+                                <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+                                <a class="btn btn-success col mx-1" href="form_user.htm?id=${user.id}"><span class="iconify fs-20" data-icon="clarity:pencil-solid"></span></a>
+                                <a class="btn btn-danger col mx-1" href="deleteuser.htm?id=${user.id}"><span class="iconify fs-20" data-icon="bi:trash-fill"></span></a>
                             </div>
                         </td>
                     </tr>

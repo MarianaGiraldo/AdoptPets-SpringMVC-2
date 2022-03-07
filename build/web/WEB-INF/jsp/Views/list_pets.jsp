@@ -35,14 +35,12 @@
                             </c:if>
                             <c:if test="${!pet.is_adopted}">
                             No </p>
-                            <form class="card-action mt-4" action="form_adoptpet.htm" method="GET">
-                                <input name="pet_id" type="hidden" value="${pet.id}" />
-                                <button class="btn btn-primary fs-20" type="submit">Adopt this pet</button>
-                            </form>
+                            <a class="btn btn-primary col mx-1" href="form_adoptpet.htm?pet_id=${pet.id}">Adopt this pet</a>
                         </c:if>
-                        <div class="row">
-                            <a class="btn btn-success fs-15 mt-3 col mx-1" href="form_pet.htm?id=${pet.id}">Edit pet</a>
-                            <a class="btn btn-danger fs-15 mt-3 col mx-1" href="deletepet.htm?id=${pet.id}">Delete pet</a>
+                        <div class="row mt-3 mx-1">
+                            <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+                            <a class="btn btn-success col mx-1" href="form_pet.htm?id=${pet.id}"><span class="iconify fs-15" data-icon="clarity:pencil-solid"></span></a>
+                            <a class="btn btn-danger col mx-1" href="deletepet.htm?id=${pet.id}"><span class="iconify fs-15" data-icon="bi:trash-fill"></span></a>
                         </div>
                     </div>
                 </div>  

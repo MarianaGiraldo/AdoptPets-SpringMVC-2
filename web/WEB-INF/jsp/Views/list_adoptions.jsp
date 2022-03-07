@@ -16,17 +16,18 @@
         $('#userTable').DataTable();
     });
 </script>
-
-<div class="container-contact100">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+             
+<div class="container-contact100 p-2">
     <div class="m-t-80 wrap-list">
-        <span class="contact100-form-title m-b-0">
-            Users
+        <span class="contact100-form-title mb-0 mt-4">
+            List of adoptions
         </span>
         <div class="container-contact100-form-btn w-50 mx-auto mb-3">
             <div class="wrap-contact100-form-btn pt-2 pb-0">
                 <div class="contact100-form-bgbtn"></div>
-                <a class="contact100-form-btn btn mt-1 mb-0" href="form_user.htm">
-                    <span class="fs-18">Add User</span>
+                <a class="contact100-form-btn btn mt-1 mb-0" href="form_adoptpet.htm">
+                    <span class="fs-18">Add Adoption</span>
                 </a>
             </div>
         </div>
@@ -34,22 +35,24 @@
             <thead class="table-primary bg-opacity-50">
                 <tr>
                     <th>ID</th>
-                    <th>User ID</th>
-                    <th>Pet ID</th>
+                    <th>User</th>
+                    <th>Pet name</th>
                     <th>Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${adoptions}" var="adopt">
                     <tr>
                         <td>${adopt.id}</td>
-                        <td>${adopt.user_id}</td>
-                        <td>${adopt.pet_id}</td>
+                        <td>${adopt.user_name}</td>
+                        <td>${adopt.pet_name}</td>
                         <td>${adopt.date}</td>
                         <td>
-                            <div class="row">
-                                <a class="btn btn-success mt-3 col mx-1" href="form_user.htm?id=${user.id}">Edit user</a>
-                                <a class="btn btn-danger mt-3 col mx-1" href="deleteuser.htm?id=${user.id}">Delete user</a>
+                            <div class="row p-0">
+                                <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+                                <a class="btn btn-success col mx-1" href="form_adoptpet.htm?id=${adopt.id}"><span class="iconify fs-20" data-icon="clarity:pencil-solid"></span></a>
+                                <a class="btn btn-danger col mx-1" href="deleteadoption.htm?id=${adopt.id}"><span class="iconify fs-20" data-icon="bi:trash-fill"></span></a>
                             </div>
                         </td>
                     </tr>

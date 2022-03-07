@@ -11,10 +11,12 @@
     <div class="wrap-contact100 m-t-80">
         <form:form commandName="adopt" cssClass="contact100-form validate-form" method="POST">
             <span class="contact100-form-title m-b-0">
-                Adopt pet ${pet_id}
+                Adopt pet ${ab.getPet_id()}
             </span>
             <form:errors path="*" element="div" cssClass="alert alert-danger mt-0" />
-            <br/>
+            <span class="contact100-form-title  fs-20 m-b-0">
+                Form code: ${code}
+            </span>
             <div class="wrap-input100 input100-select">
                 <form:label path="user_id" cssClass="label-input100">Select user</form:label>
                     <div class="select2">
@@ -26,11 +28,26 @@
                 </div>
                 <span class="focus-input100"></span>
             </div>
-            <div class="wrap-input100 input100-select">
-                <form:label path="pet_id" cssClass="label-input100">Pet id</form:label>
-                <form:input path="pet_id" cssClass="input100 " type="text" value="${pet_id}" disabled="true"/>
-
+            <c:if test="${reqPet_id != null}">
+                <div class="wrap-input100 input100-select">
+                    <form:label path="pet_id" cssClass="label-input100">Pet id</form:label>
+                    <form:input path="pet_id" cssClass="input100 " type="text" disabled="true"/>
+                </div>
+            </c:if>
+            <c:if test="${reqPet_id == null}">
+                <div class="wrap-input100 input100-select">
+                <form:label path="pet_id" cssClass="label-input100">Select pet</form:label>
+                    <div class="select2">
+                    <form:select path="pet_id" cssClass="form-select selection-2-pettype fs-18" >
+                        <c:forEach items="${petList}" var="pet">
+                            <form:option value="${pet.id}">${pet.name}</form:option>
+                        </c:forEach>
+                    </form:select>
+                </div>
+                <span class="focus-input100"></span>
             </div>
+            </c:if>
+
             <div class="wrap-input100">
                 <form:label path="date" cssClass="label-input100">Date</form:label>
                 <form:input path="date" cssClass="input100 " type="date" />

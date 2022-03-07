@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class AdoptBean {
+    private int id;
     private String user_id;
     private String pet_id;
     private String date;
@@ -69,5 +70,19 @@ public class AdoptBean {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

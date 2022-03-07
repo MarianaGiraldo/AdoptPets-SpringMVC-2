@@ -24,8 +24,9 @@
         <script src='<c:url value="public/vendor/bootstrap/js/popper.js"/>'></script>
         <script src='<c:url value="public/vendor/bootstrap/js/bootstrap.min.js"/>'></script>
         
-        <!--===============================================================================================-->
+        <!--Font Awesome===============================================================================================-->
         <link rel="stylesheet" type="text/css" href='<c:url value="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />'>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         
         <!-- Jquery===============================================================================================-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -43,16 +44,13 @@
 
         <div class="container-fluid container">
             <div class="logo">
-                <a class="navbar-brand" href="index.htm">Your Logo</a>
+                <a class="navbar-brand" href="index.htm">Home</a>
             </div>
             <button class="navbar-toggler" style="color: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#mainListDiv" aria-controls="mainListDiv" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="mainListDiv" class="main_list collapse navbar-collapse">
+            <div id="mainListDiv" class="main_list collapse navbar-collapse mx-0 p-0">
                 <ul class="navlinks navbar-nav me-auto mb-2 mb-lg-0 ">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.htm">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="listusers.htm">Users</a>
                     </li>
@@ -60,12 +58,17 @@
                         <a class="nav-link" href="listpets.htm">Pets</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="listadoptions.htm">List Adoptions</a>
+                    </li>
+                </ul>
+                <ul class="navlinks navbar-nav float-right p-0 mr-0">
+                    
+                    <li class="nav-item  float-right">
                         <a class="nav-link" href="login.jsp">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item float-right">
                         <a class="nav-link" href="logout.jsp">Logout</a>
                     </li>
-
                 </ul>
             </div>
         </div>

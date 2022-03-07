@@ -20,13 +20,18 @@
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
+                
                 <prop key="form_user.htm">UserController</prop>
-                <prop key="form_pet.htm">PetController</prop>
-                <prop key="form_adoptpet.htm">AdoptController</prop>
-                <prop key="listpets.htm">PetController</prop>
                 <prop key="listusers.htm">UserController</prop>
-                <prop key="deletepet.htm">PetController</prop>
                 <prop key="deleteuser.htm">UserController</prop>
+                
+                <prop key="form_pet.htm">PetController</prop>
+                <prop key="listpets.htm">PetController</prop>
+                <prop key="deletepet.htm">PetController</prop>
+                
+                <prop key="form_adoptpet.htm">AdoptController</prop>
+                <prop key="listadoptions.htm">AdoptController</prop>
+                <prop key="deleteadoption.htm">AdoptController</prop>
             </props>
         </property>
     </bean>
@@ -43,12 +48,7 @@
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
     
-    <!--
-    The form controller.
-    -->
-    <bean name="FormController"
-          class="Controllers.FormController" />
-    
+        
     <!--
     The Adopt controller.
     -->

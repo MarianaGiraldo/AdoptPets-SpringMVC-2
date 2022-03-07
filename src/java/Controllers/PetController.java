@@ -5,16 +5,11 @@
  */
 package Controllers;
 
-import Dao.DBConnection;
+import Dao.PetDao;
 import Models.PetBean;
 import Models.PetBeanValidation;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,28 +24,22 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class PetController {
-
-    private final JdbcTemplate jdbcTemplate;
     private final PetBeanValidation validate_pet;
+    private final PetDao petDao;
 
     public PetController() {
-        DBConnection con = new DBConnection();
-        this.jdbcTemplate = new JdbcTemplate(con.connect());
         this.validate_pet = new PetBeanValidation();
+        this.petDao = new PetDao();
     }
 
     @RequestMapping(value = "listpets.htm", method = RequestMethod.GET)
     public ModelAndView listPets() {
         ModelAndView mav = new ModelAndView();
-        try {
-            String sql = "SELECT * from pets";
-            List pets;
-            pets = this.jdbcTemplate.queryForList(sql);
-            mav.addObject("pets", pets);
-            mav.setViewName("Views/list_pets");
-        } catch (DataAccessException e) {
-            System.err.print(e.getMessage());
-        }
+        List pets;
+        pets = petDao.listPets();
+        mav.addObject("pets", pets);
+        mav.setViewName("Views/list_pets");
+        
         return mav;
     }
 
@@ -59,7 +48,7 @@ public class PetController {
         ModelAndView mav = new ModelAndView("Views/jstlform_pet");
         if (request.getParameter("id") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
-            PetBean pet = getPetxId(id);
+            PetBean pet = this.petDao.getPetxId(id);
             mav.addObject("pet", pet);
             return mav;
         } else {
@@ -75,7 +64,7 @@ public class PetController {
      * @param pb
      * @param result
      * @param status
-     * @return ModelAndView *
+     * @return ModelAndView
      */
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.POST)
     public ModelAndView valPostPetForm(
@@ -89,16 +78,8 @@ public class PetController {
             mav.addObject("pet", new PetBean());
             mav.setViewName("Views/jstlform_pet");
         } else {
-            String sql;
-            // Check if pet exists
-            if (getPetxId(pb.getId()).getId() != 0) {
-                sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ? WHERE id = " + pb.getId();
-                System.out.println(sql);
-            } else {
-                sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted) VALUES (?, ?, ?, ?, ?, ?)";
-            }
-            this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted());
-
+            //Insert or Update on pets table
+            this.petDao.savePet(pb);
             mav.addObject("pet", pb);
             mav.setViewName("Views/jstlview_pet");
         }
@@ -108,38 +89,11 @@ public class PetController {
     @RequestMapping(value = "deletepet.htm", method = RequestMethod.GET)
     public ModelAndView deletePet(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String sqlAdopt = "DELETE FROM `adoptings` WHERE `adoptings`.`pet_id` = ?";
-            this.jdbcTemplate.update(sqlAdopt, id);
-            String sql = "DELETE from pets WHERE id = ?";
-            this.jdbcTemplate.update(sql, id);
-        } catch (DataAccessException e) {
-            System.err.print(e.getMessage());
-        } catch (NumberFormatException e) {
-            System.err.print(e.getMessage());
-        }
+        int id = Integer.parseInt(request.getParameter("id"));
+        this.petDao.deletePet(id);
         mav.setViewName("redirect:/listpets.htm");
         return mav;
     }
 
-    public PetBean getPetxId(int id) {
-        PetBean pb = new PetBean();
-        System.out.println("Pet id: " + id);
-        String sql = "SELECT * from pets WHERE id = " + id;
-        return (PetBean) this.jdbcTemplate.query(
-                sql, (ResultSet rs) -> {
-                    if (rs.next()) {
-                        pb.setId(rs.getInt("Id"));
-                        pb.setPet_type(rs.getString("pet_type"));
-                        pb.setName(rs.getString("name"));
-                        pb.setBorn_year(rs.getInt("born_year"));
-                        pb.setColor(rs.getString("Color"));
-                        pb.setBreed(rs.getString("Breed"));
-                        pb.setPet_type(rs.getString("Pet_type"));
-                        pb.setIs_adopted(rs.getBoolean("Is_adopted"));
-                    }
-                    return pb;
-        });
-    }
+    
 }

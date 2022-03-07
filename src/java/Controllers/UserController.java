@@ -7,14 +7,11 @@
 package Controllers;
 
 import Dao.DBConnection;
-import Models.PetBean;
+import Dao.UserDao;
 import Models.UserBean;
 import Models.UserBeanValidation;
-import java.sql.ResultSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,40 +26,38 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class UserController {
-    private final JdbcTemplate jdbcTemplate;
     private final UserBeanValidation validate_user;
+    private final UserDao userDao;
 
     public UserController() {
-        DBConnection con = new DBConnection();
-        this.jdbcTemplate = new JdbcTemplate(con.connect());
         this.validate_user = new UserBeanValidation();
+        this.userDao = new UserDao();
     }
     
-    
+    //Listing users
     @RequestMapping("listusers.htm")
     public ModelAndView listUsers(){
         ModelAndView mav = new ModelAndView();
-        
-        String sql = "SELECT * from users";
-        List users = this.jdbcTemplate.queryForList(sql);
+        List users = this.userDao.listUsers();
         mav.addObject("users", users);
         mav.setViewName("Views/listusers");
         return mav;
     }
     
+    //User Form Method: GET
     @RequestMapping(value = "form_user.htm", method = RequestMethod.GET)
     public ModelAndView getUserForm(HttpServletRequest request){
-       ModelAndView mav = new ModelAndView("Views/jstlform_user");
+        ModelAndView mav = new ModelAndView("Views/jstlform_user");
         if (request.getParameter("id") != null) {
+            //Update form
             int id = Integer.parseInt(request.getParameter("id"));
-            System.out.println(id);
-            UserBean user = getUserById(id);
+            UserBean user = this.userDao.getUserById(id);
             mav.addObject("user", user);
-            return mav;
         } else {
+            //Insert form
             mav.addObject("user", new UserBean());
-            return mav;
         }
+        return mav;
     }
     
     /***
@@ -84,18 +79,8 @@ public class UserController {
             mav.addObject("ub", new UserBean());
             mav.setViewName("Views/jstlform_user");
         }else{
-            String sql;
-            int id = ub.getId();
-            System.out.println("Id Post:" + id);
-            // Check if user exists
-            if (getUserById(id).getDocument() != null) {
-                sql = "UPDATE `users` SET document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
-                System.out.println(sql);
-            } else {
-                sql = "INSERT INTO users(document, name, phoneNumber, email) VALUES (?, ?, ?, ?)";
-            }
-            this.jdbcTemplate.update(sql, ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
-            
+            //Insert or Update on users table
+            this.userDao.saveUser(ub);
             mav.addObject("ub", ub);
             mav.setViewName("Views/jstlview_user");
         }
@@ -105,34 +90,12 @@ public class UserController {
     @RequestMapping(value = "deleteuser.htm", method = RequestMethod.GET)
     public ModelAndView deleteUser(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String sqlAdopt = "DELETE FROM `adoptings` WHERE `adoptings`.`user_id` = ?";
-            this.jdbcTemplate.update(sqlAdopt, id);
-            String sql = "DELETE from users WHERE id = ?";
-            this.jdbcTemplate.update(sql, id);
-        } catch (DataAccessException e) {
-            System.err.print(e.getMessage());
-        } catch (NumberFormatException e) {
-            System.err.print(e.getMessage());
-        }
+        int id = Integer.parseInt(request.getParameter("id"));
+        this.userDao.deleteUser(id);
         mav.setViewName("redirect:/listusers.htm");
         return mav;
     }
     
-    public UserBean getUserById(int id) {
-        UserBean ub = new UserBean();
-        String sql = "SELECT * from users WHERE id =" + id ;
-        return (UserBean) this.jdbcTemplate.query(
-                sql, (ResultSet rs) -> {
-                    if (rs.next()) {
-                        ub.setDocument(rs.getString("Document"));
-                        ub.setName(rs.getString("name"));
-                        ub.setPhoneNumber(rs.getString("PhoneNumber"));
-                        ub.setEmail(rs.getString("email"));
-                    }
-                    return ub;
-        });
-    }
+    
     
 }
