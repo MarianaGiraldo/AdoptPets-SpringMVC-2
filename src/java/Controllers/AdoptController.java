@@ -80,6 +80,7 @@ public class AdoptController {
         return mav;
     }
     
+<<<<<<< HEAD
     /***
      * Validation adoptions form
      * @param ab
@@ -117,6 +118,20 @@ public class AdoptController {
             this.adoptDao.saveAdoption(ab);
             mav.setViewName("Views/jstlview_adoptpet");
         }
+=======
+    
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView postAdoptForm(AdoptBean ab, ModelMap map){
+        map.addAttribute("adopt", ab);
+        ModelAndView mav = new ModelAndView();
+        String sql = "INSERT INTO `user_pet`(`user_id`, `pet_id`) VALUES (?, ?)";
+        this.jdbcTemplate.update(sql, ab.getUser_id(), ab.getPet_id());
+        
+        String sql2 = "UPDATE `pets` SET `is_adopted` = '1' WHERE `pets`.`id` = (?);";
+        this.jdbcTemplate.update(sql2, ab.getPet_id());
+        mav.setViewName("Views/jstlview_adoptpet");
+        
+>>>>>>> 214b4f8724da09cb4f990380c37b7522946c8eed
         return mav;
     }
     

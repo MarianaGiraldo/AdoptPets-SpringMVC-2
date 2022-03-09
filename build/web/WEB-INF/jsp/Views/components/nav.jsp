@@ -55,6 +55,7 @@
                         <a class="nav-link" href="listusers.htm">Users</a>
                     </li>
                     <li class="nav-item">
+<<<<<<< HEAD
                         <a class="nav-link" href="listpets.htm">Pets</a>
                     </li>
                     <li class="nav-item">
@@ -64,6 +65,14 @@
                 <ul class="navlinks navbar-nav float-right p-0 mr-0">
                     
                     <li class="nav-item  float-right">
+=======
+                        <a class="nav-link" href="listusers.htm">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="listpets.htm">Pets</a>
+                    </li>
+                    <li class="nav-item">
+>>>>>>> 214b4f8724da09cb4f990380c37b7522946c8eed
                         <a class="nav-link" href="login.jsp">Login</a>
                     </li>
                     <li class="nav-item float-right">
