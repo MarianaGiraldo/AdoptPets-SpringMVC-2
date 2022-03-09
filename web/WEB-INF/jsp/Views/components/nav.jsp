@@ -40,39 +40,31 @@
     </head>
     <body class="">
 
-    <nav class="navbar fixed-top navbar-expand-lg nav bg-dark">
+    <nav class="navbar fixed-top navbar-expand-lg nav ">
 
-        <div class="container-fluid container">
+        <div class="w-100">
             <div class="logo">
                 <a class="navbar-brand" href="index.htm">Home</a>
             </div>
-            <button class="navbar-toggler" style="color: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#mainListDiv" aria-controls="mainListDiv" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" style="float: right" type="button" data-bs-toggle="collapse" data-bs-target="#mainListDiv" aria-controls="mainListDiv" aria-expanded="false" aria-label="Toggle navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                    width="50" height="50"
+                    viewBox="0 0 50 50"
+                    style=" fill:#fff;"><path d="M 0 7.5 L 0 12.5 L 50 12.5 L 50 7.5 Z M 0 22.5 L 0 27.5 L 50 27.5 L 50 22.5 Z M 0 37.5 L 0 42.5 L 50 42.5 L 50 37.5 Z"></path></svg>
             </button>
             <div id="mainListDiv" class="main_list collapse navbar-collapse mx-0 p-0">
-                <ul class="navlinks navbar-nav me-auto mb-2 mb-lg-0 ">
+                <ul class="navlinks navbar-nav me-auto mb-2 mb-lg-0 w-75">
                     <li class="nav-item">
                         <a class="nav-link" href="listusers.htm">Users</a>
                     </li>
                     <li class="nav-item">
-<<<<<<< HEAD
                         <a class="nav-link" href="listpets.htm">Pets</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="listadoptions.htm">List Adoptions</a>
                     </li>
-                </ul>
-                <ul class="navlinks navbar-nav float-right p-0 mr-0">
                     
-                    <li class="nav-item  float-right">
-=======
-                        <a class="nav-link" href="listusers.htm">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listpets.htm">Pets</a>
-                    </li>
-                    <li class="nav-item">
->>>>>>> 214b4f8724da09cb4f990380c37b7522946c8eed
+                    <li class="nav-item" style="float: right">
                         <a class="nav-link" href="login.jsp">Login</a>
                     </li>
                     <li class="nav-item float-right">
@@ -86,7 +78,7 @@
     <!-- Jquery needed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     
-    <!-- Function used to shrink nav bar removing paddings and adding black background
+    <!-- Function used to shrink nav bar removing paddings and adding black background -->
     <script>
         $(window).scroll(function() {
             if ($(document).scrollTop() > 50) {
@@ -98,4 +90,4 @@
                 $('.nav').removeClass('p-0');
             }
         });
-    </script> -->
+    </script> 

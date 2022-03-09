@@ -22,7 +22,7 @@
         </div>
         <div class="row p-3 mx-2"  id="listpets">
             <c:forEach items="${pets}" var="pet">
-                <div class="card col-sm-2 col-md-3 m-3" style="width: 18rem;">
+                <div class="card col-xs-8 col-sm-5 col-md-3 col-lg-3 m-3" style="width: 18rem;">
                     <div class="card-body card-content">
                         <h3 class="card-title"><b>${pet.name}</b> </h3>
                         <h4 class="card-subtitle mb-2 text-muted">${pet.pet_type}</h4>
