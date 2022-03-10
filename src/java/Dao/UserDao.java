@@ -43,6 +43,7 @@ public class UserDao {
                         ub.setEmail(rs.getString("Email"));
                         ub.setName(rs.getString("Name"));
                         ub.setPhoneNumber(rs.getString("PhoneNumber"));
+                        ub.setPhoto(rs.getString("Photo"));
                     }
                     return ub;
         });
@@ -53,11 +54,11 @@ public class UserDao {
         String sql;
         // Check if user exists
         if (this.getUserById(id).getDocument() != null) {
-            sql = "UPDATE `users` SET document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
+            sql = "UPDATE `users` SET  `photo`= ?, document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
         } else {
-            sql = "INSERT INTO users(document, name, phoneNumber, email) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO users(photo, document, name, phoneNumber, email, photo) VALUES (?, ?, ?, ?, ?)";
         }
-        this.jdbcTemplate.update(sql, ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
+        this.jdbcTemplate.update(sql, ub.getPhoto(), ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
     }
     
     public void deleteUser(int id){

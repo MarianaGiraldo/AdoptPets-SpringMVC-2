@@ -9,7 +9,7 @@
 
 <div class="container-contact100">
     <div class="wrap-contact100 m-t-80">
-        <form:form commandName="user" cssClass="contact100-form validate-form" method="POST">
+        <form:form commandName="user" cssClass="contact100-form validate-form" method="POST" enctype="multipart/form-data">
             <span class="contact100-form-title m-b-0">
                 Welcome!
             </span>
@@ -36,6 +36,12 @@
             <div class="wrap-input100 validate-input" data-validate = "Document number is required">
                 <form:label path="document" cssClass="label-input100">Identification Number</form:label>
                 <form:input path="document" cssClass="input100" type="text" placeholder="Enter your ID"  value="" pattern="[0-9]{10}" />
+                <span class="focus-input100"></span>
+            </div>
+                
+            <div class="wrap-input100 validate-input" data-validate = "Photo is required">
+                <form:label path="photo" cssClass="label-input100">Photo</form:label>
+                <form:input path="photo" cssClass="form-control" type="file"/>
                 <span class="focus-input100"></span>
             </div>
 

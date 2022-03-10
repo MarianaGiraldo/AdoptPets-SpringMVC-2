@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS adopt_pets_db2;
 CREATE DATABASE `adopt_pets_db2`;
-
+USE `adopt_pets_db2`;
 CREATE TABLE `adopt_pets_db2`.`users` ( 
 	`id` INT NOT NULL AUTO_INCREMENT,  
         `Document` VARCHAR(11) NOT NULL ,
@@ -31,3 +31,6 @@ CREATE TABLE `adopt_pets_db2`.`adoptions` (
         FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
         FOREIGN KEY (`pet_id`) REFERENCES `pets`(`id`)
 ) ENGINE = InnoDB;
+
+ALTER TABLE `pets` ADD `Photo` VARCHAR(255) NULL AFTER `is_adopted`;
+ALTER TABLE `users` ADD `Photo` VARCHAR(255) NULL AFTER `id`;

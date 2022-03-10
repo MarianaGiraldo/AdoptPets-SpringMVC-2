@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author Mariana
  */
 public class PetDao {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public PetDao() {
         DBConnection con = new DBConnection();
@@ -51,6 +51,7 @@ public class PetDao {
                         pb.setBreed(rs.getString("Breed"));
                         pb.setPet_type(rs.getString("Pet_type"));
                         pb.setIs_adopted(rs.getBoolean("Is_adopted"));
+                        pb.setPhoto(rs.getString("Photo"));
                     }
                     return pb;
         });
@@ -60,11 +61,11 @@ public class PetDao {
         String sql;
         // Check if pet exists
         if (this.getPetxId(pb.getId()).getId() != 0) {
-            sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ? WHERE id = " + pb.getId();
+            sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?, `photo`= ? WHERE id = " + pb.getId();
         } else {
-            sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted) VALUES (?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted, photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
         }
-        this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted());
+        this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted(), pb.getPhoto());
     }
     
     public void deletePet(int id) {

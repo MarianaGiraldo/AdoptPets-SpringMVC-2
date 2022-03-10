@@ -10,12 +10,12 @@
 
 <div class="container-contact100">
     <div class="wrap-contact100 m-t-80">
-        <form:form commandName="pet" cssClass="contact100-form validate-form" method="POST">
+        <form:form commandName="pet" cssClass="contact100-form validate-form" method="POST" enctype="multipart/form-data">
             <span class="contact100-form-title m-b-0">
                 Pet
             </span>
             <form:errors path="*" element="div" cssClass="alert alert-danger" />
-            
+
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <form:label path="name" cssClass="label-input100">Name</form:label>
                 <form:input path="name" cssClass="input100" type="text" placeholder="Enter the pet's name"/>
@@ -39,12 +39,18 @@
                 <span class="focus-input100"></span>
             </div>
 
+            <div class="wrap-input100 validate-input" data-validate = "Photo is required">
+                <form:label path="photo" cssClass="label-input100">Photo</form:label>
+                <form:input path="photo" cssClass="form-control" type="file" />
+                <span class="focus-input100"></span>
+            </div>
+
             <div class="wrap-input100 input100-select">
                 <form:label path="pet_type" cssClass="label-input100">Pet type</form:label>
                     <div class="select2">
                     <form:select path="pet_type" cssClass="form-select selection-2-pettype fs-18 w-100">
-                        <option selected disabled>Select a type of pet</option>
-                        <form:option value="Cat" cssClass="w-100">Cat</form:option>
+                        <option disabled>Select a type of pet</option>
+                        <form:option selected="true" value="Cat" cssClass="w-100">Cat</form:option>
                         <form:option value="Dog" cssClass="w-100">Dog</form:option>
                         <form:option value="Hamster" cssClass="w-100">Hamster</form:option>
                         <form:option value="Bird" cssClass="w-100">Bird</form:option>
@@ -59,9 +65,9 @@
                 <form:label path="is_adopted" cssClass="label-input100">Is adopted?</form:label>
                     <div>
                     <form:select path="is_adopted" cssClass="selection-2-isadopted form-select fs-18 w-75">
-                        <option selected disabled>Select if is adopted</option>
+                        <option disabled>Select if is adopted</option>
                         <form:option value="true" cssClass="w-100">Yes</form:option>
-                        <form:option value="false" cssClass="w-100">No</form:option>
+                        <form:option selected="true" value="false" cssClass="w-100">No</form:option>
                     </form:select>
                 </div>
                 <span class="focus-input100"></span>

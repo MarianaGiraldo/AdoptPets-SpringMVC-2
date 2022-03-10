@@ -21,6 +21,7 @@ public class PetBean {
     private String color;
     private String breed;
     private Boolean is_adopted;
+    private String photo;
 
     public PetBean() {
     }
@@ -33,6 +34,17 @@ public class PetBean {
         this.breed = breed;
         this.is_adopted = is_adopted;
     }
+
+    public PetBean(String pet_type, String name, int born_year, String color, String breed, Boolean is_adopted, String photo) {
+        this.pet_type = pet_type;
+        this.name = name;
+        this.born_year = born_year;
+        this.color = color;
+        this.breed = breed;
+        this.is_adopted = is_adopted;
+        this.photo = photo;
+    }
+    
     
     
     /**
@@ -131,6 +143,20 @@ public class PetBean {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return the photo
+     */
+    public String getPhoto() {
+        return photo;
+    }
+
+    /**
+     * @param photo the photo to set
+     */
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
     
     

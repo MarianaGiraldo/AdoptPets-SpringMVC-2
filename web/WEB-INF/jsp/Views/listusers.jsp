@@ -33,6 +33,7 @@
             <thead class="table-primary bg-opacity-50">
                 <tr>
                     <th>ID</th>
+                    <th>Photo</th>
                     <th>Name</th>
                     <th>Document</th>
                     <th>Phone</th>
@@ -44,6 +45,7 @@
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td>${user.id}</td>
+                        <td><img class="card-img-top rounded-circle" src='<c:url value="${user.photo}"></c:url>'  alt="User photo" style="width: 80px; height: 100%"/></td>
                         <td>${user.name}</td>
                         <td>${user.document}</td>
                         <td>${user.phoneNumber}</td>

@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class UserBean {
     private int id;
+    private String photo;
     private String name;
     private String phoneNumber;
     private String email;
@@ -29,6 +30,14 @@ public class UserBean {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.document = id;
+    }
+
+    public UserBean(String photo, String name, String phoneNumber, String email, String document) {
+        this.photo = photo;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.document = document;
     }
 
     
@@ -100,6 +109,20 @@ public class UserBean {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return the photo
+     */
+    public String getPhoto() {
+        return photo;
+    }
+
+    /**
+     * @param photo the photo to set
+     */
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     

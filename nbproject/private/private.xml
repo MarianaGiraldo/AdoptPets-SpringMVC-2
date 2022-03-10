@@ -4,15 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/jstlform_pet.jsp</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/AdoptDao.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/dispatcher-servlet.xml</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Controllers/AdoptController.java</file>
             <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/public/DB/adopt_pets_db.sql</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/components/nav.jsp</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Models/PetBean.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/jstlform_adoptpet.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Models/PetBeanValidation.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/PetDao.java</file>
             <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/list_pets.jsp</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/public/css/nav.css</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Controllers/PetController.java</file>
         </group>
     </open-files>
 </project-private>
