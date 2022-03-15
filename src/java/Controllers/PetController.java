@@ -34,6 +34,12 @@ public class PetController {
 
     private final PetBeanValidation validate_pet;
     private final PetDao petDao;
+    //Uploading Images vars
+    private static final String UPLOAD_DIRECTORY = "..\\..\\web\\public\\images\\pets";
+    private static final String UPLOAD_DIRECTORYBUILD = "public\\images\\pets";
+    private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; //3MB
+    private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; //40MB
+    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; //50MB
 
     public PetController() {
         this.validate_pet = new PetBeanValidation();
@@ -67,7 +73,7 @@ public class PetController {
 
     /**
      * *
-     * Form Validation
+     * Form Post and Validation
      *
      * @param pb
      * @param result
@@ -96,10 +102,32 @@ public class PetController {
 
         if (isMultipart) {
             //Create a type file var
-            FileItemFactory file = new DiskFileItemFactory();
+            DiskFileItemFactory file = new DiskFileItemFactory();
+            //Set maximum memory allowed
+            file.setSizeThreshold(MEMORY_THRESHOLD);
+            //Set maximum request value
+            file.setRepository(new File(System.getProperty("java.io.tmpdir")));
             //Put the file as parameter to a fileUpload
             ServletFileUpload fileUpload = new ServletFileUpload(file);
 
+            //Set Max file size limit
+            fileUpload.setFileSizeMax(MAX_FILE_SIZE);
+            //Set max request size
+            fileUpload.setSizeMax(MAX_REQUEST_SIZE);
+            //Construye una ruta temporal para almacenar archivos cargados
+            String uploadPath = request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uploadPathBuild = request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORYBUILD;
+            File uploadDirBuild = new File(uploadPathBuild);
+
+            if (!uploadDirBuild.exists()) {
+                uploadDirBuild.mkdir();
+            }
+            
             //Create a list with the form values
             List<FileItem> items = null;
             try {
@@ -114,11 +142,14 @@ public class PetController {
                 //Check if is a file type
                 if (!fileItem.isFormField()) {
                     //Get the file name
-                    File f = new File("public/images/pets/" + fileItem.getName());
-                    String filename = "public/images/pets/" + f.getName();
+                    String f = new  File(fileItem.getName()).getName();
+                    
+                    int petcode = petDao.getCode();
+                    
+                    String filename = "public/images/pets/" + petcode + f ;
                     System.out.println("Filename: " + filename);
-                    File uploadFile = new File(uploadFilePath, f.getName());
-                    File uploadFile2 = new File(uploadFilePath2, f.getName());
+                    File uploadFile = new File(uploadFilePath, filename);
+                    File uploadFile2 = new File(uploadFilePath2, filename);
                     try {
                         //Save file
                         fileItem.write(uploadFile);

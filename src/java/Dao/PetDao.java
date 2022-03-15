@@ -80,5 +80,15 @@ public class PetDao {
             System.err.print(e.getMessage());
         }
     }
+
+    public int getCode(){
+        String sql = "select max(id)+1 as code from pets";
+        String codeStr = jdbcTemplate.queryForObject(sql, String.class);
+        int code = 1;
+        if (codeStr != null) {
+            code = Integer.parseInt(codeStr);
+        }
+        return code;
+    }
     
 }
