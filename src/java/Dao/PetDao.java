@@ -7,6 +7,7 @@
 package Dao;
 
 import Models.PetBean;
+import java.io.File;
 import java.sql.ResultSet;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
@@ -90,5 +91,21 @@ public class PetDao {
         }
         return code;
     }
-    
+
+    public void deletePetAndImage(int id, String photo, String deletePath) {
+        final String DELETE_DIRECTORY = "..\\..\\web\\";
+        String deleteFile = deletePath + DELETE_DIRECTORY + photo;
+        System.out.println("Delete Path: " + deleteFile);
+        File f = new File (deleteFile);
+        try{
+            if(!f.delete()) {
+                throw new Exception();
+            }else{
+                this.deletePet(id);
+            }
+        }catch(Exception e){
+            System.err.println("Error deleting: " + e.getMessage());
+        }
+    }
+
 }

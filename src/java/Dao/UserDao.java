@@ -8,6 +8,7 @@ package Dao;
 
 import Models.PetBean;
 import Models.UserBean;
+import java.io.File;
 import java.sql.ResultSet;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
@@ -56,7 +57,7 @@ public class UserDao {
         if (this.getUserById(id).getDocument() != null) {
             sql = "UPDATE `users` SET  `photo`= ?, document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
         } else {
-            sql = "INSERT INTO users(photo, document, name, phoneNumber, email, photo) VALUES (?, ?, ?, ?, ?)";
+            sql = "INSERT INTO users(photo, document, name, phoneNumber, email) VALUES (?, ?, ?, ?, ?)";
         }
         this.jdbcTemplate.update(sql, ub.getPhoto(), ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
     }
@@ -73,5 +74,30 @@ public class UserDao {
             System.err.print(e.getMessage());
         }
     }
-    
+
+    public int getCode(){
+        String sql = "select max(id)+1 as code from users";
+        String codeStr = jdbcTemplate.queryForObject(sql, String.class);
+        int code = 1;
+        if (codeStr != null) {
+            code = Integer.parseInt(codeStr);
+        }
+        return code;
+    }
+
+    public void deletePetAndImage(int id, String photo, String deletePath) {
+        final String DELETE_DIRECTORY = "..\\..\\web\\";
+        String deleteFile = deletePath + DELETE_DIRECTORY + photo;
+        System.out.println("Delete Path: " + deleteFile);
+        File f = new File (deleteFile);
+        try{
+            if(!f.delete()) {
+                throw new Exception();
+            }else{
+                this.deleteUser(id);
+            }
+        }catch(Exception e){
+            System.err.println("Error deleting: " + e.getMessage());
+        }
+    }
 }

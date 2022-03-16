@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -90,10 +89,6 @@ public class PetController {
     ) {
         ModelAndView mav = new ModelAndView();
         /*  Manage Images upload */
-        //Get path
-        String uploadFilePath = request.getSession().getServletContext().getRealPath("../../web/public/images/pets");
-        String uploadFilePath2 = request.getSession().getServletContext().getRealPath("public/images/pets");
-        
         //Check is form is multipart
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
@@ -148,8 +143,8 @@ public class PetController {
                     
                     String filename = "public/images/pets/" + petcode + f ;
                     System.out.println("Filename: " + filename);
-                    File uploadFile = new File(uploadFilePath, filename);
-                    File uploadFile2 = new File(uploadFilePath2, filename);
+                    File uploadFile = new File(uploadPath, petcode + f);
+                    File uploadFile2 = new File(uploadPathBuild, petcode + f);
                     try {
                         //Save file
                         fileItem.write(uploadFile);
@@ -195,7 +190,10 @@ public class PetController {
     public ModelAndView deletePet(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         int id = Integer.parseInt(request.getParameter("id"));
-        this.petDao.deletePet(id);
+        //this.petDao.deletePet(id);
+        String deletePath = request.getServletContext().getRealPath("") + File.separator;
+        String photo = this.petDao.getPetxId(id).getPhoto();
+        this.petDao.deletePetAndImage(id, photo, deletePath);
         mav.setViewName("redirect:/listpets.htm");
         return mav;
     }
