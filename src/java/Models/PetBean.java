@@ -22,6 +22,7 @@ public class PetBean {
     private String breed;
     private Boolean is_adopted;
     private String photo;
+    private String old_photo;
 
     public PetBean() {
     }
@@ -35,7 +36,7 @@ public class PetBean {
         this.is_adopted = is_adopted;
     }
 
-    public PetBean(String pet_type, String name, int born_year, String color, String breed, Boolean is_adopted, String photo) {
+    public PetBean(String pet_type, String name, int born_year, String color, String breed, Boolean is_adopted, String photo, String old_photo) {
         this.pet_type = pet_type;
         this.name = name;
         this.born_year = born_year;
@@ -43,9 +44,9 @@ public class PetBean {
         this.breed = breed;
         this.is_adopted = is_adopted;
         this.photo = photo;
+        this.old_photo = old_photo;
     }
-    
-    
+        
     
     /**
      * @return the pet_type
@@ -157,6 +158,20 @@ public class PetBean {
      */
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    /**
+     * @return the old_photo
+     */
+    public String getOld_photo() {
+        return old_photo;
+    }
+
+    /**
+     * @param old_photo the old_photo to set
+     */
+    public void setOld_photo(String old_photo) {
+        this.old_photo = old_photo;
     }
     
     

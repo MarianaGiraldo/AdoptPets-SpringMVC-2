@@ -15,11 +15,12 @@ import javax.ejb.Stateless;
 @Stateless
 public class UserBean {
     private int id;
-    private String photo;
     private String name;
     private String phoneNumber;
     private String email;
     private String document;
+    private String photo;
+    private String old_photo;
     
 
     public UserBean() {
@@ -32,12 +33,13 @@ public class UserBean {
         this.document = id;
     }
 
-    public UserBean(String photo, String name, String phoneNumber, String email, String document) {
-        this.photo = photo;
+    public UserBean(String name, String phoneNumber, String email, String document, String photo, String old_photo) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.document = document;
+        this.photo = photo;
+        this.old_photo = old_photo;
     }
 
     
@@ -123,6 +125,20 @@ public class UserBean {
      */
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    /**
+     * @return the old_photo
+     */
+    public String getOld_photo() {
+        return old_photo;
+    }
+
+    /**
+     * @param old_photo the old_photo to set
+     */
+    public void setOld_photo(String old_photo) {
+        this.old_photo = old_photo;
     }
 
     

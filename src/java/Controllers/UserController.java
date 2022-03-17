@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -193,7 +192,9 @@ public class UserController {
     public ModelAndView deleteUser(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         int id = Integer.parseInt(request.getParameter("id"));
-        this.userDao.deleteUser(id);
+        String deletePath = request.getServletContext().getRealPath("") + File.separator;
+        String photo = this.userDao.getUserById(id).getPhoto();
+        this.userDao.deleteUserAndImage(id, photo, deletePath);
         mav.setViewName("redirect:/listusers.htm");
         return mav;
     }

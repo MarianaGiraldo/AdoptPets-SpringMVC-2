@@ -131,7 +131,7 @@ public class AdoptController {
     }
         
     @RequestMapping(value = "deleteadoption.htm", method = RequestMethod.GET)
-    public ModelAndView deleteUser(HttpServletRequest request) {
+    public ModelAndView deleteAdoption(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         int id = Integer.parseInt(request.getParameter("id"));
         this.adoptDao.deleteAdoption(id);

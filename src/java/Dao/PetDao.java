@@ -7,11 +7,17 @@
 package Dao;
 
 import Models.PetBean;
+import Models.PetBeanValidation;
+import Models.UserBean;
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.fileupload.FileItem;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -19,10 +25,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class PetDao {
     private final JdbcTemplate jdbcTemplate;
+    private final PetBeanValidation validate_pet;
+    private final String DELETE_DIRECTORY = "..\\..\\web\\";
 
     public PetDao() {
         DBConnection con = new DBConnection();
         this.jdbcTemplate = new JdbcTemplate(con.connect());
+        this.validate_pet = new PetBeanValidation();
     }
     
     public List listPets(){
@@ -58,15 +67,19 @@ public class PetDao {
         });
     }
     
-    public void savePet(PetBean pb){
+    public int savePet(PetBean pb){
         String sql;
         // Check if pet exists
         if (this.getPetxId(pb.getId()).getId() != 0) {
-            sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?, `photo`= ? WHERE id = " + pb.getId();
+            if(pb.getPhoto() == null){
+                sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?  WHERE id = " + pb.getId();
+                return this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted());
+            }
+            sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?, `photo`= ?, `old_photo`= ? WHERE id = " + pb.getId();
         } else {
-            sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted, photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted, photo, old_photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         }
-        this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted(), pb.getPhoto());
+        return this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted(), pb.getPhoto(), pb.getPhoto());
     }
     
     public void deletePet(int id) {
@@ -93,7 +106,6 @@ public class PetDao {
     }
 
     public void deletePetAndImage(int id, String photo, String deletePath) {
-        final String DELETE_DIRECTORY = "..\\..\\web\\";
         String deleteFile = deletePath + DELETE_DIRECTORY + photo;
         System.out.println("Delete Path: " + deleteFile);
         File f = new File (deleteFile);
@@ -102,6 +114,175 @@ public class PetDao {
                 throw new Exception();
             }else{
                 this.deletePet(id);
+            }
+        }catch(Exception e){
+            System.err.println("Error deleting: " + e.getMessage());
+        }
+    }
+    public ModelAndView addPetandImage(
+            List<FileItem> items, 
+            ArrayList<String> list, 
+            String uploadPath, 
+            String uploadPathBuild, 
+            PetBean pb, 
+            BindingResult result, 
+            ModelAndView mav
+    ){
+        for (FileItem item : items) {
+                //Create a fileItem var to get the form values
+                FileItem fileItem = (FileItem) item;
+
+                //Check if is a file type
+                if (!fileItem.isFormField()) {
+                    //Get the file name
+                    String f = new  File(fileItem.getName()).getName();
+                    
+                    int petcode = this.getCode();
+                    String uniqueName = petcode + list.get(1) + '-' + f ;
+                    String filename = "public/images/pets/" + uniqueName;
+                    System.out.println("Filename: " + filename);
+                    File uploadFile = new File(uploadPath, uniqueName);
+                    File uploadFile2 = new File(uploadPathBuild, uniqueName);
+                    try {
+                        //Save file
+                        fileItem.write(uploadFile);
+                        fileItem.write(uploadFile2);
+                    } catch (Exception e) {
+                        System.out.println("Error en file.write: " + e.getMessage());
+                    }
+                    pb.setPhoto(filename);
+                    System.out.println("Photo: " + pb.getPhoto());
+                } else {
+                    list.add(fileItem.getString());
+                }
+            }
+            try {
+                pb.setName(list.get(1));
+                pb.setBorn_year(Integer.parseInt(list.get(2)));
+                pb.setColor(list.get(3));
+                pb.setBreed(list.get(4));
+                pb.setPet_type(list.get(5));
+                pb.setIs_adopted(Boolean.parseBoolean(list.get(6)));
+
+                this.validate_pet.validate(pb, result);
+                if (result.hasErrors()) {
+                    mav.addObject("pet", new PetBean());
+                    mav.setViewName("Views/jstlform_pet");
+                } else {
+                    //Insert or Update on pets table
+                    this.savePet(pb);
+                    mav.addObject("pet", pb);
+                    mav.setViewName("Views/jstlview_pet");
+                }
+            } catch (NumberFormatException e) {
+                mav.addObject("pet", new PetBean());
+                mav.setViewName("Views/jstlform_pet");
+            }
+            return mav;
+    }
+
+    public ModelAndView updatePetandImage(
+            List<FileItem> items, 
+            ArrayList<String> list, 
+            String uploadPath, 
+            String uploadPathBuild, 
+            String deletePath, 
+            PetBean pb, 
+            BindingResult result, 
+            ModelAndView mav
+    ){
+        for (FileItem item : items) {
+                //Create a fileItem var to get the form values
+                FileItem fileItem = (FileItem) item;
+
+                //Check if is a file type
+                if (!fileItem.isFormField()) {
+                    //Get the file name
+                    String f = new  File(fileItem.getName()).getName();
+                    
+                    int petcode = this.getCode();
+                    String uniqueName = petcode + list.get(1) + '-' + f ;
+                    String filename = "public/images/pets/" + uniqueName;
+                    System.out.println("Filename: " + filename);
+                    File uploadFile = new File(uploadPath, uniqueName);
+                    File uploadFile2 = new File(uploadPathBuild, uniqueName);
+                    try {
+                        //Deletes the old photo
+                        this.deleteUpdatedPhoto(pb.getOld_photo(), deletePath);
+                        //Save file
+                        fileItem.write(uploadFile);
+                        fileItem.write(uploadFile2);
+                    } catch (Exception e) {
+                        System.out.println("Error en file.write: " + e.getMessage());
+                    }
+                    pb.setPhoto(filename);
+                } else {
+                    list.add(fileItem.getString());
+                }
+            }
+            try {
+                pb.setName(list.get(1));
+                pb.setBorn_year(Integer.parseInt(list.get(2)));
+                pb.setColor(list.get(3));
+                pb.setBreed(list.get(4));
+                pb.setPet_type(list.get(5));
+                pb.setIs_adopted(Boolean.parseBoolean(list.get(6)));
+
+                this.validate_pet.validate(pb, result);
+                if (result.hasErrors()) {
+                    mav.addObject("pet", new PetBean());
+                    mav.setViewName("Views/jstlform_pet");
+                } else {
+                    //Insert or Update on pets table
+                    this.savePet(pb);
+                    mav.addObject("pet", pb);
+                    mav.setViewName("Views/jstlview_pet");
+                }
+            } catch (NumberFormatException e) {
+                mav.addObject("pet", new PetBean());
+                mav.setViewName("Views/jstlform_pet");
+            }
+            return mav;
+    }
+    
+    public ModelAndView updatePetnoPhoto(
+            PetBean pb, 
+            ArrayList<String> list, 
+            ModelAndView mav, 
+            BindingResult result
+    ){
+        try {
+                pb.setName(list.get(1));
+                pb.setBorn_year(Integer.parseInt(list.get(2)));
+                pb.setColor(list.get(3));
+                pb.setBreed(list.get(4));
+                pb.setPet_type(list.get(5));
+                pb.setIs_adopted(Boolean.parseBoolean(list.get(6)));
+
+                this.validate_pet.validate(pb, result);
+                if (result.hasErrors()) {
+                    mav.addObject("pet", new PetBean());
+                    mav.setViewName("Views/jstlform_pet");
+                } else {
+                    //Insert or Update on pets table
+                    this.savePet(pb);
+                    mav.addObject("pet", pb);
+                    mav.setViewName("Views/jstlview_pet");
+                }
+            } catch (NumberFormatException e) {
+                mav.addObject("pet", new PetBean());
+                mav.setViewName("Views/jstlform_pet");
+            }
+        return mav;
+    }
+    
+    public void deleteUpdatedPhoto(String photo, String deletePath){
+        String deleteFile = deletePath + DELETE_DIRECTORY + photo;
+        System.out.println("Delete Path: " + deleteFile);
+        File f = new File (deleteFile);
+        try{
+            if(!f.delete()) {
+                throw new Exception();
             }
         }catch(Exception e){
             System.err.println("Error deleting: " + e.getMessage());

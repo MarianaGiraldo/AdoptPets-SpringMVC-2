@@ -34,3 +34,6 @@ CREATE TABLE `adopt_pets_db2`.`adoptions` (
 
 ALTER TABLE `pets` ADD `Photo` VARCHAR(255) NULL AFTER `is_adopted`;
 ALTER TABLE `users` ADD `Photo` VARCHAR(255) NULL AFTER `id`;
+
+ALTER TABLE `pets` ADD `old_photo` VARCHAR(255) NULL AFTER `Photo`;
+ALTER TABLE `users` ADD `old_photo` VARCHAR(255) NULL AFTER `Photo`;

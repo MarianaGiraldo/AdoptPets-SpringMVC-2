@@ -41,7 +41,7 @@
                         </c:if>
                         <div class="row mt-3 mx-1">
                             <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
-                            <a class="btn btn-success col mx-1" href="form_pet.htm?id=${pet.id}"><span class="iconify fs-15" data-icon="clarity:pencil-solid"></span></a>
+                            <a class="btn btn-success col mx-1" href="form_pet.htm?id=${pet.id}&old_photo=${pet.old_photo}"><span class="iconify fs-15" data-icon="clarity:pencil-solid"></span></a>
                             <a class="btn btn-danger col mx-1" href="deletepet.htm?id=${pet.id}"><span class="iconify fs-15" data-icon="bi:trash-fill"></span></a>
                         </div>
                     </div>

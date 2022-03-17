@@ -59,15 +59,19 @@ public class PetController {
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.GET)
     public ModelAndView getPetForm(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("Views/jstlform_pet");
+        Boolean update = false;
         if (request.getParameter("id") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
+            String old_photo = request.getParameter("old_photo");
             PetBean pet = this.petDao.getPetxId(id);
+            pet.setOld_photo(old_photo);
             mav.addObject("pet", pet);
-            return mav;
+            update = true;
         } else {
             mav.addObject("pet", new PetBean());
-            return mav;
         }
+        mav.addObject("update", update);
+        return mav;
     }
 
     /**
@@ -81,7 +85,7 @@ public class PetController {
      * @return ModelAndView
      */
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.POST)
-    public ModelAndView valPostPetForm(
+    public ModelAndView savePetForm(
             @ModelAttribute("pet") PetBean pb,
             BindingResult result,
             SessionStatus status,
@@ -109,7 +113,7 @@ public class PetController {
             fileUpload.setFileSizeMax(MAX_FILE_SIZE);
             //Set max request size
             fileUpload.setSizeMax(MAX_REQUEST_SIZE);
-            //Construye una ruta temporal para almacenar archivos cargados
+            //Creates a temporal path to save files
             String uploadPath = request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
             File uploadDir = new File(uploadPath);
 
@@ -122,66 +126,35 @@ public class PetController {
             if (!uploadDirBuild.exists()) {
                 uploadDirBuild.mkdir();
             }
+            //Creates a temporal path to delete files
+            String deletePath = request.getServletContext().getRealPath("") + File.separator;
             
             //Create a list with the form values
             List<FileItem> items = null;
             try {
                 items = fileUpload.parseRequest(request);
+                for (FileItem item : items) {
+                    FileItem fileItem = (FileItem) item;
+                    list.add(fileItem.getString());
+                }
+                //For  to add fields to list
             } catch (FileUploadException e) {
                 System.out.println("Error getting request items: " + e.getMessage());
             }
-            for (FileItem item : items) {
-                //Create a fileItem var to get the form values
-                FileItem fileItem = (FileItem) item;
-
-                //Check if is a file type
-                if (!fileItem.isFormField()) {
-                    //Get the file name
-                    String f = new  File(fileItem.getName()).getName();
-                    
-                    int petcode = petDao.getCode();
-                    
-                    String filename = "public/images/pets/" + petcode + f ;
-                    System.out.println("Filename: " + filename);
-                    File uploadFile = new File(uploadPath, petcode + f);
-                    File uploadFile2 = new File(uploadPathBuild, petcode + f);
-                    try {
-                        //Save file
-                        fileItem.write(uploadFile);
-                        fileItem.write(uploadFile2);
-                    } catch (Exception e) {
-                        System.out.println("Error en file.write: " + e.getMessage());
-                    }
-                    pb.setPhoto(filename);
-                    System.out.println("Photo: " + pb.getPhoto());
-                } else {
-                    list.add(fileItem.getString());
+            System.out.println("List: "+ list);
+            //Checks if form action is update
+            if(!Boolean.parseBoolean(list.get(0))){
+                //Insert new pet and image
+                mav = this.petDao.addPetandImage(items, list, uploadPath, uploadPathBuild, pb, result, mav);
+            } else{
+                //Update pet
+                //Checks if photo will be updated
+                if(list.get(7).isEmpty() || list.get(7).equals("") || list.get(7) == null){
+                    mav = this.petDao.updatePetnoPhoto(pb, list, mav, result);
+                }else{
+                    mav = this.petDao.updatePetandImage(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
                 }
             }
-            System.out.println("List: " + list);
-            try {
-                pb.setName(list.get(0));
-                pb.setBorn_year(Integer.parseInt(list.get(1)));
-                pb.setColor(list.get(2));
-                pb.setBreed(list.get(3));
-                pb.setPet_type(list.get(4));
-                pb.setIs_adopted(Boolean.parseBoolean(list.get(5)));
-
-                this.validate_pet.validate(pb, result);
-                if (result.hasErrors()) {
-                    mav.addObject("pet", new PetBean());
-                    mav.setViewName("Views/jstlform_pet");
-                } else {
-                    //Insert or Update on pets table
-                    this.petDao.savePet(pb);
-                    mav.addObject("pet", pb);
-                    mav.setViewName("Views/jstlview_pet");
-                }
-            } catch (NumberFormatException e) {
-                mav.addObject("pet", new PetBean());
-                mav.setViewName("Views/jstlform_pet");
-            }
-
         }
         return mav;
     }
@@ -190,12 +163,12 @@ public class PetController {
     public ModelAndView deletePet(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         int id = Integer.parseInt(request.getParameter("id"));
-        //this.petDao.deletePet(id);
         String deletePath = request.getServletContext().getRealPath("") + File.separator;
         String photo = this.petDao.getPetxId(id).getPhoto();
         this.petDao.deletePetAndImage(id, photo, deletePath);
         mav.setViewName("redirect:/listpets.htm");
         return mav;
     }
-
+    
+    
 }

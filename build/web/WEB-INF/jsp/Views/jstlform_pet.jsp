@@ -15,7 +15,7 @@
                 Pet
             </span>
             <form:errors path="*" element="div" cssClass="alert alert-danger" />
-
+            <form:input path="name" type="hidden" value="${update}"/>
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <form:label path="name" cssClass="label-input100">Name</form:label>
                 <form:input path="name" cssClass="input100" type="text" placeholder="Enter the pet's name"/>
@@ -36,12 +36,6 @@
             <div class="wrap-input100 validate-input" data-validate = "Breed is required">
                 <form:label path="breed" cssClass="label-input100">Breed</form:label>
                 <form:input path="breed" cssClass="input100" type="text" placeholder="Enter the pet's breed" />
-                <span class="focus-input100"></span>
-            </div>
-
-            <div class="wrap-input100 validate-input" data-validate = "Photo is required">
-                <form:label path="photo" cssClass="label-input100">Photo</form:label>
-                <form:input path="photo" cssClass="form-control" type="file" />
                 <span class="focus-input100"></span>
             </div>
 
@@ -70,6 +64,15 @@
                         <form:option selected="true" value="false" cssClass="w-100">No</form:option>
                     </form:select>
                 </div>
+                <span class="focus-input100"></span>
+            </div>
+                    
+            <div class="wrap-input100 validate-input" data-validate = "Photo is required">
+                <form:label path="photo" cssClass="label-input100">Photo</form:label> <br/>
+                <c:if test="${update}">
+                    <img src="<c:url value="${pet.old_photo}"></c:url>" style="width: 250px; height: 100%; margin-bottom: 15px" />
+                </c:if>
+                <form:input path="photo" cssClass="form-control" type="file" />
                 <span class="focus-input100"></span>
             </div>
 

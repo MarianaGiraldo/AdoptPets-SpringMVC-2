@@ -85,7 +85,7 @@ public class UserDao {
         return code;
     }
 
-    public void deletePetAndImage(int id, String photo, String deletePath) {
+    public void deleteUserAndImage(int id, String photo, String deletePath) {
         final String DELETE_DIRECTORY = "..\\..\\web\\";
         String deleteFile = deletePath + DELETE_DIRECTORY + photo;
         System.out.println("Delete Path: " + deleteFile);
