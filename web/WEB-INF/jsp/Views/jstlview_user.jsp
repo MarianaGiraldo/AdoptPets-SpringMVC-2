@@ -11,10 +11,6 @@
     <div class="wrap-contact100 m-t-80">
         <h1>User</h1>
         <div class="py-3">
-            <div class="text-muted">
-                
-            </div>
-            <b>ID: </b> <c:out value="${ub.getId()}" /><br/>    
             <b>Name: </b> <c:out value="${ub.getName()}" /><br/>
             <b>Email: </b> <c:out value="${ub.getEmail()}" /><br/>
             <b>Phone: </b> <c:out value="${ub.getPhoneNumber()}" /><br/>

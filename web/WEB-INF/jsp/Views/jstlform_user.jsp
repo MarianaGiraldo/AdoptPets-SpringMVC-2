@@ -15,6 +15,7 @@
             </span>
             
             <form:errors path="*" element="div" cssClass="alert alert-danger mt-0" />
+            <form:input path="name" type="hidden" value="${update}"/>
             <br/>
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <form:label path="name" cssClass="label-input100">Your Name</form:label>
@@ -41,6 +42,9 @@
                 
             <div class="wrap-input100 validate-input" data-validate = "Photo is required">
                 <form:label path="photo" cssClass="label-input100">Photo</form:label>
+                <c:if test="${update}">
+                    <br><img class="rounded-lg offset-md-3" src="<c:url value="${user.old_photo}"></c:url>" style="width: 50%; height: 100%; margin-bottom: 15px" />
+                </c:if>
                 <form:input path="photo" cssClass="form-control" type="file"/>
                 <span class="focus-input100"></span>
             </div>

@@ -10,7 +10,6 @@
 <div class="container-contact100">
     <div class="wrap-contact100 m-t-80">
         <h1>Pet</h1>
-        <jsp:useBean id="pet" scope="request" class="Models.PetBean" />
         <p class="py-3">
             
             <b>Name: </b>${pet.getName()}<br/>

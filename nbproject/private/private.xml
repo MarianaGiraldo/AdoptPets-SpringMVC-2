@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Controllers/UserController.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Controllers/AdoptController.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/UserDao.java</file>
-            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/PetDao.java</file>
             <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Controllers/PetController.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/PetDao.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/jstlform_pet.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/list_pets.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/web/WEB-INF/jsp/Views/jstlform_adoptpet.jsp</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Models/PetBean.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Dao/UserDao.java</file>
+            <file>file:/C:/Users/SENA/Documents/Mariana/Netbeans/AdoptPets-SpringMVC-2-main/src/java/Models/UserBean.java</file>
         </group>
     </open-files>
 </project-private>

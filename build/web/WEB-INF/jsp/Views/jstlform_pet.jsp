@@ -70,7 +70,7 @@
             <div class="wrap-input100 validate-input" data-validate = "Photo is required">
                 <form:label path="photo" cssClass="label-input100">Photo</form:label> <br/>
                 <c:if test="${update}">
-                    <img src="<c:url value="${pet.old_photo}"></c:url>" style="width: 250px; height: 100%; margin-bottom: 15px" />
+                    <img class="rounded-lg offset-sm-2" src="<c:url value="${pet.old_photo}"></c:url>" style="width: 65%; height: 100%; margin-bottom: 20px" />
                 </c:if>
                 <form:input path="photo" cssClass="form-control" type="file" />
                 <span class="focus-input100"></span>

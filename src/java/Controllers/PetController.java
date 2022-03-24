@@ -31,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PetController {
 
-    private final PetBeanValidation validate_pet;
     private final PetDao petDao;
     //Uploading Images vars
     private static final String UPLOAD_DIRECTORY = "..\\..\\web\\public\\images\\pets";
@@ -41,10 +40,12 @@ public class PetController {
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; //50MB
 
     public PetController() {
-        this.validate_pet = new PetBeanValidation();
         this.petDao = new PetDao();
     }
-
+ /***
+  * Method get to list Pets
+  * @return ModelAndView mav
+  */
     @RequestMapping(value = "listpets.htm", method = RequestMethod.GET)
     public ModelAndView listPets() {
         ModelAndView mav = new ModelAndView();
@@ -55,7 +56,11 @@ public class PetController {
 
         return mav;
     }
-
+/***
+ * Get pet form to insert and update
+ * @param request
+ * @return ModelAndView mav
+ */
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.GET)
     public ModelAndView getPetForm(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("Views/jstlform_pet");
@@ -82,7 +87,7 @@ public class PetController {
      * @param result
      * @param status
      * @param request
-     * @return ModelAndView
+     * @return ModelAndView mav
      */
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.POST)
     public ModelAndView savePetForm(
@@ -145,20 +150,26 @@ public class PetController {
             //Checks if form action is update
             if(!Boolean.parseBoolean(list.get(0))){
                 //Insert new pet and image
-                mav = this.petDao.addPetandImage(items, list, uploadPath, uploadPathBuild, pb, result, mav);
+                deletePath = null;
+                mav = this.petDao.savePetandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
             } else{
                 //Update pet
                 //Checks if photo will be updated
                 if(list.get(7).isEmpty() || list.get(7).equals("") || list.get(7) == null){
                     mav = this.petDao.updatePetnoPhoto(pb, list, mav, result);
                 }else{
-                    mav = this.petDao.updatePetandImage(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
+                    mav = this.petDao.savePetandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
                 }
             }
         }
         return mav;
     }
 
+    /***
+     * Method to delete pet and image
+     * @param request
+     * @return 
+     */
     @RequestMapping(value = "deletepet.htm", method = RequestMethod.GET)
     public ModelAndView deletePet(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();

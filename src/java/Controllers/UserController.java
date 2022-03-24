@@ -60,30 +60,34 @@ public class UserController {
     @RequestMapping(value = "form_user.htm", method = RequestMethod.GET)
     public ModelAndView getUserForm(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("Views/jstlform_user");
+        Boolean update = false;
         if (request.getParameter("id") != null) {
             //Update form
+            String old_photo = request.getParameter("old_photo");
             int id = Integer.parseInt(request.getParameter("id"));
             UserBean user = this.userDao.getUserById(id);
+            user.setOld_photo(old_photo);
+            System.out.println(user.getOld_photo());
             mav.addObject("user", user);
+            update = true;
         } else {
             //Insert form
             mav.addObject("user", new UserBean());
         }
+        mav.addObject("update", update);
         return mav;
     }
 
-    /**
-     * *
-     * Form Validation
-     *
+    /***
+     * Insert or update form
      * @param ub
      * @param result
      * @param status
      * @param request
-     * @return ModelAndView *
+     * @return 
      */
     @RequestMapping(value = "form_user.htm", method = RequestMethod.POST)
-    public ModelAndView valPostUserForm(
+    public ModelAndView saveUserForm(
             @ModelAttribute("user") UserBean ub,
             BindingResult result,
             SessionStatus status,
@@ -124,66 +128,36 @@ public class UserController {
             if (!uploadDirBuild.exists()) {
                 uploadDirBuild.mkdir();
             }
+            //Creates a temporal path to delete files
+            String deletePath = request.getServletContext().getRealPath("") + File.separator;
             
             //Create a list with the form values
             List<FileItem> items = null;
             try {
                 items = fileUpload.parseRequest(request);
+                for (FileItem item : items) {
+                    FileItem fileItem = (FileItem) item;
+                    list.add(fileItem.getString());
+                }
+                //For  to add fields to list
             } catch (FileUploadException e) {
                 System.out.println("Error getting request items: " + e.getMessage());
             }
-            for (FileItem item : items) {
-                //Create a fileItem var to get the form values
-                FileItem fileItem = (FileItem) item;
-
-                //Check if is a file type
-                if (!fileItem.isFormField()) {
-                    //Get the file name
-                    String f = new  File(fileItem.getName()).getName();
-                    
-                    int code = userDao.getCode();
-                    
-                    String filename = "public/images/users/" + code + f ;
-                    System.out.println("Filename: " + filename);
-                    File uploadFile = new File(uploadPath, code + f);
-                    File uploadFile2 = new File(uploadPathBuild, code + f);
-                    try {
-                        //Save file
-                        fileItem.write(uploadFile);
-                        fileItem.write(uploadFile2);
-
-                    } catch (Exception e) {
-                        System.out.println("Error en file.write: " + e.getMessage());
-                    }
-                    ub.setPhoto(filename);
-                    System.out.println("Photo: " + ub.getPhoto());
-                } else {
-                    list.add(fileItem.getString());
+            System.out.println("List: "+ list);
+            //Checks if form action is update
+            if(!Boolean.parseBoolean(list.get(0))){
+                //Insert new pet and image
+                deletePath = null;
+                mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
+            } else{
+                //Update pet
+                //Checks if photo will be updated
+                if(list.get(5).isEmpty() || list.get(5).equals("") || list.get(5) == null){
+                   mav = this.userDao.updateUsernoPhoto(ub, list, mav, result);
+                }else{
+                   mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
                 }
             }
-            System.out.println("List: " + list);
-            try {
-                ub.setName(list.get(0));
-                ub.setEmail(list.get(1));
-                ub.setPhoneNumber(list.get(2));
-                ub.setDocument(list.get(3));
-
-                this.validate_user.validate(ub, result);
-                if (result.hasErrors()) {
-                    mav.addObject("ub", new UserBean());
-                    mav.setViewName("Views/jstlform_user");
-                } else {
-                    //Insert or Update on users table
-                    System.out.println("Saving user");
-                    this.userDao.saveUser(ub);
-                    mav.addObject("ub", ub);
-                    mav.setViewName("Views/jstlview_user");
-                }
-            } catch (NumberFormatException e) {
-                mav.addObject("ub", new UserBean());
-                mav.setViewName("Views/jstlform_user");
-            }
-
         }
         return mav;
     }
