@@ -155,7 +155,6 @@ public class PetController {
             } catch (FileUploadException e) {
                 System.out.println("Error getting request items: " + e.getMessage());
             }
-            System.out.println("List: " + list);
             //Checks if form action is update
             if (!Boolean.parseBoolean(list.get(0))) {
                 //Insert new pet and image

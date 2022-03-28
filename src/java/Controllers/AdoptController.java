@@ -50,7 +50,7 @@ public class AdoptController {
         mav.addObject("reqPet_id", reqPet_id);
         
         //Adding users and pets lists
-        List users = userDao.listUsers();
+        List users = userDao.listUsersLimitAdopt();
         mav.addObject("userList", users);
         List pets = petDao.listAvailablePets();
         mav.addObject("petList", pets);
@@ -98,7 +98,7 @@ public class AdoptController {
         this.validate_adopt.validate(ab, result);
         if (result.hasErrors()) {
             //Adding users and pets lists
-            List users = userDao.listUsers();
+            List users = userDao.listUsersLimitAdopt();
             mav.addObject("userList", users);
             List pets = petDao.listAvailablePets();
             mav.addObject("petList", pets);

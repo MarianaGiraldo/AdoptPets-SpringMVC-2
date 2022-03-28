@@ -37,3 +37,5 @@ ALTER TABLE `users` ADD `Photo` VARCHAR(255) NULL AFTER `id`;
 
 ALTER TABLE `pets` ADD `old_photo` VARCHAR(255) NULL AFTER `Photo`;
 ALTER TABLE `users` ADD `old_photo` VARCHAR(255) NULL AFTER `Photo`;
+
+ALTER TABLE `users` ADD `count_adoptions` INT NOT NULL DEFAULT '0' AFTER `Email`;

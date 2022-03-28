@@ -33,20 +33,24 @@ public class UserController {
 
     private final UserBeanValidation validate_user;
     private final UserDao userDao;
-     //Uploading Images vars
+    //Uploading Images vars
     private static final String UPLOAD_DIRECTORY = "..\\..\\web\\public\\images\\users";
     private static final String UPLOAD_DIRECTORYBUILD = "public\\images\\users";
     private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; //3MB
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; //40MB
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; //50MB
 
-
     public UserController() {
         this.validate_user = new UserBeanValidation();
         this.userDao = new UserDao();
     }
 
-    //Listing users
+    /**
+     * *
+     * Listing users on view
+     *
+     * @return ModelAndView mav
+     */
     @RequestMapping("listusers.htm")
     public ModelAndView listUsers() {
         ModelAndView mav = new ModelAndView();
@@ -56,7 +60,13 @@ public class UserController {
         return mav;
     }
 
-    //User Form Method: GET
+    /**
+     * *
+     * Method GET to user form
+     *
+     * @param request
+     * @return ModelAndView mav
+     */
     @RequestMapping(value = "form_user.htm", method = RequestMethod.GET)
     public ModelAndView getUserForm(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("Views/jstlform_user");
@@ -67,7 +77,6 @@ public class UserController {
             int id = Integer.parseInt(request.getParameter("id"));
             UserBean user = this.userDao.getUserById(id);
             user.setOld_photo(old_photo);
-            System.out.println(user.getOld_photo());
             mav.addObject("user", user);
             update = true;
         } else {
@@ -78,13 +87,15 @@ public class UserController {
         return mav;
     }
 
-    /***
+    /**
+     * *
      * Insert or update form
+     *
      * @param ub
      * @param result
      * @param status
      * @param request
-     * @return 
+     * @return
      */
     @RequestMapping(value = "form_user.htm", method = RequestMethod.POST)
     public ModelAndView saveUserForm(
@@ -130,7 +141,7 @@ public class UserController {
             }
             //Creates a temporal path to delete files
             String deletePath = request.getServletContext().getRealPath("") + File.separator;
-            
+
             //Create a list with the form values
             List<FileItem> items = null;
             try {
@@ -143,27 +154,34 @@ public class UserController {
             } catch (FileUploadException e) {
                 System.out.println("Error getting request items: " + e.getMessage());
             }
-            System.out.println("List: "+ list);
+            System.out.println("List: " + list);
             //Checks if form action is update
-            if(!Boolean.parseBoolean(list.get(0))){
+            if (!Boolean.parseBoolean(list.get(0))) {
                 //Insert new pet and image
                 deletePath = null;
                 mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
-            } else{
+            } else {
                 //Update pet
                 //Checks if photo will be updated
-                if(list.get(5).isEmpty() || list.get(5).equals("") || list.get(5) == null){
-                    System.out.println("Updates no photo");
+                if (list.get(5).isEmpty() || list.get(5).equals("") || list.get(5) == null) {
+                    //Updates with photo
                     mav = this.userDao.updateUsernoPhoto(ub, list, mav, result);
-                }else{
-                    System.out.println("Update with photo");
-                   mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
+                } else {
+                    //Updates without photo
+                    mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
                 }
             }
         }
         return mav;
     }
 
+    /**
+     * *
+     * Delete user by action button
+     *
+     * @param request
+     * @return ModelAndView mav
+     */
     @RequestMapping(value = "deleteuser.htm", method = RequestMethod.GET)
     public ModelAndView deleteUser(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();

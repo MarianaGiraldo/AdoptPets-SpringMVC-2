@@ -34,21 +34,33 @@ public class PetDao {
         this.validate_pet = new PetBeanValidation();
     }
 
+    /***
+     * List all pets in database
+     * @return List pets
+     */
     public List listPets() {
         String sql = "select * from pets";
         List pets = this.jdbcTemplate.queryForList(sql);
         return pets;
     }
 
+    /***
+     * List available pets in database
+     * @return List pets
+     */
     public List listAvailablePets() {
         String sql = "select * from pets WHERE is_adopted = 0";
         List pets = this.jdbcTemplate.queryForList(sql);
         return pets;
     }
 
+    /***
+     * Get pet model by its id
+     * @param id
+     * @return PetBean pet
+     */
     public PetBean getPetxId(int id) {
         PetBean pb = new PetBean();
-        System.out.println("Pet id: " + id);
         String sql = "SELECT * from pets WHERE id = " + id;
         return (PetBean) this.jdbcTemplate.query(
                 sql, (ResultSet rs) -> {
@@ -66,14 +78,18 @@ public class PetDao {
                     return pb;
                 });
     }
-
+    
+    /***
+     * Insert or update pet on database
+     * @param pb
+     * @return int
+     */
     public int savePet(PetBean pb) {
         String sql;
         // Check if pet exists
         if (this.getPetxId(pb.getId()).getId() != 0) {
             //Check if it will update photo
             if (pb.getPhoto() == null) {
-                System.out.println("Foto nula");
                 sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?  WHERE id = " + pb.getId();
                 return this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted());
             }
@@ -84,6 +100,10 @@ public class PetDao {
         return this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted(), pb.getPhoto(), pb.getPhoto());
     }
 
+    /***
+     * Delete pet on database by its id
+     * @param id 
+     */
     public void deletePet(int id) {
         try {
             String sqlAdopt = "DELETE FROM `adoptions` WHERE `adoptions`.`pet_id` = ?";
@@ -96,7 +116,11 @@ public class PetDao {
             System.err.print(e.getMessage());
         }
     }
-
+    
+    /***
+     * Get last id saved plus 1
+     * @return int code
+     */
     public int getCode() {
         String sql = "select max(id)+1 as code from pets";
         String codeStr = jdbcTemplate.queryForObject(sql, String.class);
@@ -107,9 +131,14 @@ public class PetDao {
         return code;
     }
 
+    /***
+     * Deletes image file and pet model on database
+     * @param id
+     * @param photo
+     * @param deletePath 
+     */
     public void deletePetAndImage(int id, String photo, String deletePath) {
         String deleteFile = deletePath + DELETE_DIRECTORY + photo;
-        System.out.println("Delete Path: " + deleteFile);
         File f = new File(deleteFile);
         try {
             if (!f.delete()) {
@@ -122,6 +151,18 @@ public class PetDao {
         }
     }
 
+    /***
+     * Insert or Update user and photo on database
+     * @param items
+     * @param list
+     * @param uploadPath
+     * @param uploadPathBuild
+     * @param deletePath
+     * @param pb
+     * @param result
+     * @param mav
+     * @return ModelAndView mav
+     */
     public ModelAndView savePetandPhoto(
             List<FileItem> items,
             ArrayList<String> list,
@@ -144,7 +185,6 @@ public class PetDao {
                 int petcode = this.getCode();
                 String uniqueName = petcode + list.get(1) + list.get(2) + '-' + f;
                 String filename = "public/images/pets/" + uniqueName;
-                System.out.println("Filename: " + filename);
                 File uploadFile = new File(uploadPath, uniqueName);
                 File uploadFile2 = new File(uploadPathBuild, uniqueName);
                 try {
@@ -156,7 +196,7 @@ public class PetDao {
                     fileItem.write(uploadFile);
                     fileItem.write(uploadFile2);
                 } catch (Exception e) {
-                    System.out.println("Error en file.write: " + e.getMessage());
+                    System.err.println("Error en file.write: " + e.getMessage());
                 }
                 pb.setPhoto(filename);
             } else {
@@ -173,6 +213,14 @@ public class PetDao {
         return mav;
     }
 
+    /***
+     * Update Pet but no photo
+     * @param pb
+     * @param list
+     * @param mav
+     * @param result
+     * @return ModelAndView mav
+     */
     public ModelAndView updatePetnoPhoto(
             PetBean pb,
             ArrayList<String> list,
@@ -189,9 +237,13 @@ public class PetDao {
         return mav;
     }
 
+    /***
+     * Deletes old photo file when updating pet
+     * @param photo
+     * @param deletePath 
+     */
     public void deleteUpdatedPhoto(String photo, String deletePath) {
         String deleteFile = deletePath + DELETE_DIRECTORY + photo;
-        System.out.println("Delete Path: " + deleteFile);
         File f = new File(deleteFile);
         try {
             if (!f.delete()) {
@@ -202,6 +254,13 @@ public class PetDao {
         }
     }
 
+    /***
+     * Pet form validation to save pet or redirect to form
+     * @param pb
+     * @param result
+     * @param mav
+     * @return ModelAndView mav
+     */
     public ModelAndView validatePet(PetBean pb, BindingResult result, ModelAndView mav) {
         this.validate_pet.validate(pb, result);
         if (result.hasErrors()) {
@@ -216,6 +275,12 @@ public class PetDao {
         return mav;
     }
 
+    /***
+     * Set Pet attributes from list
+     * @param list
+     * @param pb
+     * @return PetBean pb
+     */
     public PetBean setPetFromList(ArrayList<String> list, PetBean pb) {
         pb.setName(list.get(1));
         pb.setBorn_year(Integer.parseInt(list.get(2)));
