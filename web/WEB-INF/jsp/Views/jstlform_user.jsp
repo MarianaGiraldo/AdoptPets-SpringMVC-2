@@ -45,7 +45,7 @@
                 <c:if test="${update}">
                     <br><img class="rounded-lg offset-md-3" src="<c:url value="${user.old_photo}"></c:url>" style="width: 50%; height: 100%; margin-bottom: 15px" />
                 </c:if>
-                <form:input path="photo" cssClass="form-control" type="file"/>
+                <form:input path="photo" cssClass="form-control" type="file" value="null" />
                 <span class="focus-input100"></span>
             </div>
 

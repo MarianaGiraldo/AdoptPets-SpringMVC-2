@@ -78,7 +78,6 @@ public class PetDao {
                 return this.jdbcTemplate.update(sql, pb.getPet_type(), pb.getName(), pb.getBorn_year(), pb.getColor(), pb.getBreed(), pb.getIs_adopted());
             }
             sql = "UPDATE `pets` SET `Pet_type`= ?,`Name`= ?,`Born_year`= ?,`Color`= ?,`Breed`= ? ,`is_adopted`= ?, `photo`= ?, `old_photo`= ? WHERE id = " + pb.getId();
-            System.out.println("Foto: " + pb.getPhoto());
         } else {
             sql = "INSERT INTO pets(pet_type, name, Born_Year, color, breed, is_adopted, photo, old_photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         }

@@ -7,7 +7,6 @@ package Controllers;
 
 import Dao.PetDao;
 import Models.PetBean;
-import Models.PetBeanValidation;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +38,20 @@ public class PetController {
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; //40MB
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; //50MB
 
+    /**
+     * *
+     * PetController Constructor
+     */
     public PetController() {
         this.petDao = new PetDao();
     }
- /***
-  * Method get to list Pets
-  * @return ModelAndView mav
-  */
+
+    /**
+     * *
+     * Method get to list Pets
+     *
+     * @return ModelAndView mav
+     */
     @RequestMapping(value = "listpets.htm", method = RequestMethod.GET)
     public ModelAndView listPets() {
         ModelAndView mav = new ModelAndView();
@@ -56,11 +62,14 @@ public class PetController {
 
         return mav;
     }
-/***
- * Get pet form to insert and update
- * @param request
- * @return ModelAndView mav
- */
+
+    /**
+     * *
+     * Get pet form to insert and update
+     *
+     * @param request
+     * @return ModelAndView mav
+     */
     @RequestMapping(value = "form_pet.htm", method = RequestMethod.GET)
     public ModelAndView getPetForm(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("Views/jstlform_pet");
@@ -133,7 +142,7 @@ public class PetController {
             }
             //Creates a temporal path to delete files
             String deletePath = request.getServletContext().getRealPath("") + File.separator;
-            
+
             //Create a list with the form values
             List<FileItem> items = null;
             try {
@@ -146,18 +155,18 @@ public class PetController {
             } catch (FileUploadException e) {
                 System.out.println("Error getting request items: " + e.getMessage());
             }
-            System.out.println("List: "+ list);
+            System.out.println("List: " + list);
             //Checks if form action is update
-            if(!Boolean.parseBoolean(list.get(0))){
+            if (!Boolean.parseBoolean(list.get(0))) {
                 //Insert new pet and image
                 deletePath = null;
                 mav = this.petDao.savePetandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
-            } else{
+            } else {
                 //Update pet
                 //Checks if photo will be updated
-                if(list.get(7).isEmpty() || list.get(7).equals("") || list.get(7) == null){
+                if (list.get(7).isEmpty() || list.get(7).equals("") || list.get(7) == null) {
                     mav = this.petDao.updatePetnoPhoto(pb, list, mav, result);
-                }else{
+                } else {
                     mav = this.petDao.savePetandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, pb, result, mav);
                 }
             }
@@ -165,10 +174,12 @@ public class PetController {
         return mav;
     }
 
-    /***
+    /**
+     * *
      * Method to delete pet and image
+     *
      * @param request
-     * @return 
+     * @return
      */
     @RequestMapping(value = "deletepet.htm", method = RequestMethod.GET)
     public ModelAndView deletePet(HttpServletRequest request) {
@@ -180,6 +191,5 @@ public class PetController {
         mav.setViewName("redirect:/listpets.htm");
         return mav;
     }
-    
-    
+
 }

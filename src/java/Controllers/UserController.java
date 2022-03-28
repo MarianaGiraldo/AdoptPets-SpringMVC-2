@@ -153,8 +153,10 @@ public class UserController {
                 //Update pet
                 //Checks if photo will be updated
                 if(list.get(5).isEmpty() || list.get(5).equals("") || list.get(5) == null){
-                   mav = this.userDao.updateUsernoPhoto(ub, list, mav, result);
+                    System.out.println("Updates no photo");
+                    mav = this.userDao.updateUsernoPhoto(ub, list, mav, result);
                 }else{
+                    System.out.println("Update with photo");
                    mav = this.userDao.saveUserandPhoto(items, list, uploadPath, uploadPathBuild, deletePath, ub, result, mav);
                 }
             }

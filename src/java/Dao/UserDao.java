@@ -63,8 +63,8 @@ public class UserDao {
         // Check if user exists
         if (this.getUserById(id).getDocument() != null) {
             if (ub.getPhoto() == null) {
-                sql = "UPDATE `users` SET  `photo`= ?, document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
-                return this.jdbcTemplate.update(sql, ub.getPhoto(), ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
+                sql = "UPDATE `users` SET  document = ?, name = ?, phoneNumber = ?, email = ? WHERE id = " + id;
+                return this.jdbcTemplate.update(sql, ub.getDocument(), ub.getName(), ub.getPhoneNumber(), ub.getEmail());
             }
             sql = "UPDATE `users` SET  `photo`= ?, document = ?, name = ?, phoneNumber = ?, email = ?, old_photo = ? WHERE id = " + id;
         } else {
