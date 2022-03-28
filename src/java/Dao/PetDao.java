@@ -284,10 +284,10 @@ public class PetDao {
     public PetBean setPetFromList(ArrayList<String> list, PetBean pb) {
         pb.setName(list.get(1));
         pb.setBorn_year(Integer.parseInt(list.get(2)));
-        pb.setColor(list.get(4));
-        pb.setBreed(list.get(5));
-        pb.setPet_type(list.get(6));
-        pb.setIs_adopted(Boolean.parseBoolean(list.get(7)));
+        pb.setColor(list.get(3));
+        pb.setBreed(list.get(4));
+        pb.setPet_type(list.get(5));
+        pb.setIs_adopted(Boolean.parseBoolean(list.get(6)));
 
         return pb;
     }
